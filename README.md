@@ -14,4 +14,4 @@ Settings → Pages → Deploy from a branch → `main` / `(root)`.
 
 ## Matsedel
 Körs måndagar kl. 04 och 06 UTC (reserv övriga vardagar). Kör manuellt under Actions → Uppdatera skolmat → Run workflow.
-Misslyckas hämtningen skapas `data/debug_skolmaten.json` och körningen blir röd.
+Misslyckas hämtningen skapas `data/debug_skolmaten.json` och körningen blir  röd.
