@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Schema & Matsedel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="screen">
+  <header id="datetime" class="datetime">Laddar tid…</header>
+  <div class="layout">
+    <section class="left">
+      <div class="schedule-img">
+        <img class="img-light" src="images/schema-ljust.png" alt="Schema">
+        <img class="img-dark" src="images/schema-morkt.png" alt="Schema">
+      </div>
+      <div class="current">
+        <div id="lesson" class="lesson">–</div>
+        <div id="lessonTime" class="lesson-time"></div>
+      </div>
+      <div id="remaining" class="remaining"></div>
+    </section>
+    <section class="right">
+      <h1>Matsedel</h1>
+      <div id="menu" class="menu"></div>
+    </section>
+  </div>
+  <button id="themeBtn" class="theme-btn" aria-label="Byt ljust/mörkt läge"></button>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

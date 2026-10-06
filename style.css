@@ -1,0 +1,30 @@
+*{box-sizing:border-box}
+:root{--bg:#f4f4f4;--panel:#fff;--text:#111;--muted:#666;--line:#d9d9d9;--hl:#111;--hl-text:#fff}
+:root[data-theme=dark]{--bg:#151515;--panel:#222;--text:#f2f2f2;--muted:#aaa;--line:#3a3a3a;--hl:#f2f2f2;--hl-text:#111}
+html,body{margin:0;height:100%}
+body{font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.screen{min-height:100dvh;display:flex;flex-direction:column;gap:2vh;padding:2vh 2.5vw 9vh}
+.datetime{font-size:clamp(14px,1.5vw,26px);color:var(--muted);font-variant-numeric:tabular-nums}
+.layout{flex:1;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:2vw;min-height:0}
+.left,.right{display:flex;flex-direction:column;min-height:0}
+.schedule-img{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;border-radius:14px;overflow:hidden}
+.schedule-img img{width:100%;height:100%;object-fit:contain}
+.img-dark{display:none}
+:root[data-theme=dark] .img-light{display:none}
+:root[data-theme=dark] .img-dark{display:block}
+.current{display:flex;justify-content:space-between;align-items:baseline;gap:2vw;margin-top:2vh}
+.lesson{font-size:clamp(26px,3.6vw,64px);font-weight:800}
+.lesson-time{font-size:clamp(20px,2.4vw,44px);font-weight:700;color:var(--muted);white-space:nowrap}
+.remaining{font-size:clamp(14px,1.5vw,26px);color:var(--muted);margin-top:.6vh;font-variant-numeric:tabular-nums}
+h1{margin:0 0 1.5vh;font-size:clamp(32px,4vw,72px);font-weight:800}
+.menu{flex:1;display:flex;flex-direction:column;gap:1.2vh}
+.day{flex:1;display:grid;grid-template-columns:auto 1fr;gap:2vw;align-items:center;background:var(--panel);border:2px solid var(--line);border-radius:16px;padding:1.2vh 1.6vw}
+.day.active{background:var(--hl);color:var(--hl-text);border-color:var(--hl)}
+.day-name{font-size:clamp(16px,1.7vw,30px);font-weight:800}
+.day-date{font-size:clamp(12px,1vw,18px);opacity:.7}
+.food{text-align:right;font-size:clamp(13px,1.3vw,24px);line-height:1.25}
+.food div+div{opacity:.8;margin-top:.4vh}
+.theme-btn{position:fixed;right:max(2vw,env(safe-area-inset-right));bottom:max(2vh,env(safe-area-inset-bottom));width:clamp(44px,4vw,64px);aspect-ratio:1;border-radius:50%;border:2px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer;display:grid;place-items:center}
+.theme-btn svg{width:55%;height:55%}
+.theme-btn:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.schedule-img img{height:auto}.menu{min-height:60vh}.food{font-size:15px}}

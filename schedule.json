@@ -1,0 +1,79 @@
+[
+  {
+    "day": "måndag",
+    "start": "08:00",
+    "end": "09:00",
+    "subject": "Svenska",
+    "room": "Sal 12"
+  },
+  {
+    "day": "måndag",
+    "start": "09:10",
+    "end": "10:00",
+    "subject": "Engelska",
+    "room": "Sal 18"
+  },
+  {
+    "day": "måndag",
+    "start": "10:00",
+    "end": "11:00",
+    "subject": "Matematik",
+    "room": "Sal 21"
+  },
+  {
+    "day": "måndag",
+    "start": "11:10",
+    "end": "12:00",
+    "subject": "SO",
+    "room": "Sal 15"
+  },
+  {
+    "day": "måndag",
+    "start": "13:00",
+    "end": "14:00",
+    "subject": "NO",
+    "room": "Sal 7"
+  },
+  {
+    "day": "tisdag",
+    "start": "08:00",
+    "end": "09:00",
+    "subject": "Matematik",
+    "room": "Sal 21"
+  },
+  {
+    "day": "tisdag",
+    "start": "09:10",
+    "end": "10:00",
+    "subject": "Svenska",
+    "room": "Sal 12"
+  },
+  {
+    "day": "tisdag",
+    "start": "10:10",
+    "end": "11:00",
+    "subject": "Engelska",
+    "room": "Sal 18"
+  },
+  {
+    "day": "onsdag",
+    "start": "08:00",
+    "end": "09:00",
+    "subject": "NO",
+    "room": "Sal 7"
+  },
+  {
+    "day": "torsdag",
+    "start": "09:00",
+    "end": "10:00",
+    "subject": "SO",
+    "room": "Sal 15"
+  },
+  {
+    "day": "fredag",
+    "start": "08:00",
+    "end": "09:00",
+    "subject": "Bild",
+    "room": "Bildsalen"
+  }
+]
