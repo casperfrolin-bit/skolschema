@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111111">
+  <title>Schema & Skolmat</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="screen">
+    <header class="topbar">
+      <div id="clock">10:00</div>
+      <div class="school-name">Svensgårdsskolan</div>
+      <button id="settingsBtn" class="settings" aria-label="Inställningar">⚙</button>
+    </header>
+
+    <section class="layout">
+      <section class="now-panel">
+        <div class="label">JUST NU</div>
+        <div id="currentSubject" class="current-subject">Matematik</div>
+        <div id="currentTime" class="current-time">10–11</div>
+        <div id="timeLeft" class="time-left">60 min kvar</div>
+        <div class="progress"><div id="progressBar"></div></div>
+      </section>
+
+      <aside class="side-panel">
+        <section class="food-card">
+          <div class="card-title">DAGENS MAT</div>
+          <div id="foodMain" class="food-main">Laddar skolmaten…</div>
+          <div id="foodAlt" class="food-alt"></div>
+          <div id="foodDate" class="food-date"></div>
+        </section>
+
+        <div id="nextLessons" class="next-lessons"></div>
+      </aside>
+    </section>
+
+    <footer>
+      <span id="status">Uppdaterar…</span>
+      <span>Schema & skolmat</span>
+    </footer>
+  </main>
+
+  <dialog id="settingsDialog">
+    <form method="dialog" class="settings-form">
+      <h2>Inställningar</h2>
+      <label>
+        Skolnamn
+        <input id="schoolInput" type="text">
+      </label>
+      <label>
+        Uppdatera skolmaten var (minuter)
+        <input id="refreshInput" type="number" min="5" step="5">
+      </label>
+      <p class="hint">Schemat ligger i <code>data/schedule.json</code>. Matsedeln läses från <code>data/menu.json</code>, som kan uppdateras automatiskt via GitHub Actions.</p>
+      <div class="buttons">
+        <button value="cancel">Avbryt</button>
+        <button id="saveSettings" value="default">Spara</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
