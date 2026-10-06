@@ -1,0 +1,35 @@
+name: Uppdatera skolmat
+
+on:
+  schedule:
+    - cron: "0 3-10 * * 1-5"  # varje timme på vardagsmorgnar
+    - cron: "0 16 * * 0"      # söndag kväll (sidan visar nästa vecka i helgen)
+  workflow_dispatch:           # kan även köras manuellt under Actions
+
+permissions:
+  contents: write
+
+jobs:
+  update-menu:
+    runs-on: ubuntu-latest
+    env:
+      SKOLMATEN_TOKEN: ${{ secrets.SKOLMATEN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Installera webbläsare (behövs bara utan API-nyckel)
+        if: ${{ env.SKOLMATEN_TOKEN == '' }}
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+      - name: Hämta skolmaten
+        run: python scripts/fetch_menu.py
+      - name: Spara om något ändrats
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/ index.html
+          git diff --staged --quiet || (git commit -m "Uppdaterar skolmat" && git push)
