@@ -16,8 +16,8 @@
 
 
 vecka 41 2026   # 5 okt – 9 okt
-måndag:
-alt:
+måndag: Ugnstekt torsk serveras med sås, potatis och grönsaksbuffé
+alt: Kökets paj samt grönsaksbuffé
 tisdag:
 alt:
 onsdag:
