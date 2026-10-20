@@ -1,0 +1,32 @@
+name: Uppdatera skolmat
+
+on:
+  # Automatisk hämtning är avstängd tills Skolmaten ger oss en API-nyckel (secret SKOLMATEN_TOKEN).
+  # Ta bort # framför de tre raderna nedan för att slå på den igen.
+  # schedule:
+  #   - cron: "0 3-10 * * 1-5"  # varje timme på vardagsmorgnar
+  #   - cron: "0 16 * * 0"      # söndag kväll
+  workflow_dispatch:           # kan köras manuellt under Actions
+
+permissions:
+  contents: write
+
+jobs:
+  update-menu:
+    runs-on: ubuntu-latest
+    env:
+      SKOLMATEN_TOKEN: ${{ secrets.SKOLMATEN_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Hämta skolmaten
+        run: python scripts/fetch_menu.py
+      - name: Spara om något ändrats
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/ index.html
+          git diff --staged --quiet || (git commit -m "Uppdaterar skolmat" && git push)
