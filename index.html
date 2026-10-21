@@ -111,15 +111,19 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .seg{display:flex;border:2px solid var(--line);border-radius:calc(var(--u)*.9);overflow:hidden;background:var(--panel)}
 .seg button{font:inherit;font-weight:700;font-size:clamp(11px,calc(var(--u)*1),24px);padding:.35em .9em;border:0;background:none;color:var(--text);cursor:pointer}
 .seg button[aria-pressed=true]{background:var(--hl);color:var(--hl-text)}
-.cal{flex:0 1 auto;min-height:0;overflow:auto;padding:3px;margin:-3px;scrollbar-width:thin}
-.cal .day{grid-template-columns:calc(var(--u)*7) minmax(0,1fr)}
-.items{text-align:left;display:flex;flex-direction:column;gap:calc(var(--u)*.4);min-width:0}
-.it{display:flex;gap:.6em;align-items:baseline}
-.event-item{width:100%;font:inherit;text-align:left;color:inherit;background:transparent;border:0;padding:.1em .2em;border-radius:.35em;cursor:pointer}
+.cal{flex:1 1 auto;min-height:0;overflow:auto;padding:3px;margin:-3px;scrollbar-width:thin}
+.cal .menu{display:grid;grid-template-columns:minmax(0,1fr);grid-auto-rows:1fr;align-content:start;gap:calc(var(--u)*.55)}
+.cal .day{grid-template-columns:clamp(64px,calc(var(--u)*7),110px) minmax(0,1fr);align-items:start;min-width:0}
+.items{text-align:left;display:flex;flex-direction:column;gap:calc(var(--u)*.35);min-width:0}
+.it{display:flex;gap:.6em;align-items:baseline;min-width:0}
+.event-item{appearance:none;-webkit-appearance:none;display:flex;width:100%;font:inherit;line-height:1.35;text-align:left;color:inherit;background:transparent;border:0;padding:.15em .2em;border-radius:.35em;cursor:pointer}
+.event-item:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
 .event-item:hover .txt{text-decoration:underline}
 .event-item:focus-visible{outline:2px solid var(--text);outline-offset:1px}
 .tag{background:var(--event-color,var(--c))}
 .dots i{background:var(--event-color,var(--c))}
+.cal .day .day-name{line-height:1.2}
+.cal .day .day-date{margin-top:.2em}
 .event-dialog{width:min(92vw,560px);max-height:82vh;overflow:auto;border:1px solid var(--line);border-radius:18px;padding:1.2rem;background:var(--panel);color:var(--text);box-shadow:0 12px 50px #0004}
 .event-dialog::backdrop{background:#0008}
 .event-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
@@ -127,7 +131,7 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .event-dialog p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
 .event-dialog .event-meta{color:var(--muted);font-size:.92rem}
 .event-close{font:inherit;font-size:1.4rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);padding:.15rem .6rem;cursor:pointer}
-.tag{flex:none;background:var(--c);color:#fff;font-weight:800;font-size:.8em;line-height:1.3;padding:.05em .55em;border-radius:.5em}
+.tag{flex:none;background:var(--event-color,var(--c));color:#fff;font-weight:800;font-size:.8em;line-height:1.3;padding:.05em .55em;border-radius:.5em}
 .txt{min-width:0;overflow-wrap:anywhere}
 .none{opacity:.45}
 .nav{margin-top:auto;padding-top:calc(var(--u)*1);display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:calc(var(--u)*.6)}
@@ -154,7 +158,10 @@ html.wide .head{position:absolute;left:0;right:0;bottom:100%;margin:0 0 calc(var
 html.wide .head h1{position:static;margin:0}
 html.narrow .layout>.right,html.narrow .layout>.mid{grid-column:auto;grid-row:auto}
 html.narrow .layout{row-gap:calc(var(--vw)*6)}
-html.narrow .cal .day{grid-template-columns:calc(var(--vw)*26) minmax(0,1fr)}
+html.narrow .cal .day{grid-template-columns:clamp(58px,calc(var(--vw)*19),84px) minmax(0,1fr);gap:calc(var(--vw)*2.5);padding:calc(var(--vw)*2.3) calc(var(--vw)*2.8);align-items:start}
+html.narrow .cal .menu{grid-auto-rows:1fr;gap:calc(var(--vw)*2)}
+html.narrow .cal .items{gap:calc(var(--vw)*1.1)}
+html.narrow .cal .event-item{font-size:clamp(12px,calc(var(--vw)*3.2),18px);line-height:1.35}
 html.narrow .nbtn{font-size:clamp(16px,calc(var(--vw)*5),28px);min-width:clamp(42px,calc(var(--vw)*11),56px);height:clamp(42px,calc(var(--vw)*11),56px)}
 html.narrow .today-btn{font-size:clamp(12px,calc(var(--vw)*3.2),18px)}
 html.narrow .nlabel{font-size:clamp(14px,calc(var(--vw)*4),22px)}
