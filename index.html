@@ -111,9 +111,9 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .seg{display:flex;border:2px solid var(--line);border-radius:calc(var(--u)*.9);overflow:hidden;background:var(--panel)}
 .seg button{font:inherit;font-weight:700;font-size:clamp(11px,calc(var(--u)*1),24px);padding:.35em .9em;border:0;background:none;color:var(--text);cursor:pointer}
 .seg button[aria-pressed=true]{background:var(--hl);color:var(--hl-text)}
-.cal{flex:1 1 auto;min-height:0;overflow:auto;padding:3px;margin:-3px;scrollbar-width:thin}
-.cal .menu{display:grid;grid-template-columns:minmax(0,1fr);grid-auto-rows:1fr;align-content:start;gap:calc(var(--u)*.55)}
-.cal .day{grid-template-columns:clamp(64px,calc(var(--u)*7),110px) minmax(0,1fr);align-items:start;min-width:0}
+.cal{flex:1 1 auto;min-height:0;overflow:hidden;padding:3px;margin:-3px}
+.cal .menu{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(5,minmax(0,1fr));height:100%;min-height:0;align-content:stretch;gap:calc(var(--u)*.55)}
+.cal .day{grid-template-columns:clamp(64px,calc(var(--u)*7),110px) minmax(0,1fr);align-items:start;min-width:0;min-height:0;overflow:hidden}
 .items{text-align:left;display:flex;flex-direction:column;gap:calc(var(--u)*.35);min-width:0}
 .it{display:flex;gap:.6em;align-items:baseline;min-width:0}
 .event-item{appearance:none;-webkit-appearance:none;display:flex;width:100%;font:inherit;line-height:1.35;text-align:left;color:inherit;background:transparent;border:0;padding:.15em .2em;border-radius:.35em;cursor:pointer}
@@ -124,6 +124,8 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .dots i{background:var(--event-color,var(--c))}
 .cal .day .day-name{line-height:1.2}
 .cal .day .day-date{margin-top:.2em}
+.more-events{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-weight:800;text-align:left;padding:.15em .25em;cursor:pointer;border-radius:.35em}
+.more-events:hover{text-decoration:underline;background:color-mix(in srgb,var(--text) 5%,transparent)}
 .event-dialog{width:min(92vw,560px);max-height:82vh;overflow:auto;border:1px solid var(--line);border-radius:18px;padding:1.2rem;background:var(--panel);color:var(--text);box-shadow:0 12px 50px #0004}
 .event-dialog::backdrop{background:#0008}
 .event-dialog-head{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem}
@@ -159,7 +161,7 @@ html.wide .head h1{position:static;margin:0}
 html.narrow .layout>.right,html.narrow .layout>.mid{grid-column:auto;grid-row:auto}
 html.narrow .layout{row-gap:calc(var(--vw)*6)}
 html.narrow .cal .day{grid-template-columns:clamp(58px,calc(var(--vw)*19),84px) minmax(0,1fr);gap:calc(var(--vw)*2.5);padding:calc(var(--vw)*2.3) calc(var(--vw)*2.8);align-items:start}
-html.narrow .cal .menu{grid-auto-rows:1fr;gap:calc(var(--vw)*2)}
+html.narrow .cal .menu{grid-template-rows:repeat(5,minmax(0,1fr));gap:calc(var(--vw)*2)}
 html.narrow .cal .items{gap:calc(var(--vw)*1.1)}
 html.narrow .cal .event-item{font-size:clamp(12px,calc(var(--vw)*3.2),18px);line-height:1.35}
 html.narrow .nbtn{font-size:clamp(16px,calc(var(--vw)*5),28px);min-width:clamp(42px,calc(var(--vw)*11),56px);height:clamp(42px,calc(var(--vw)*11),56px)}
@@ -204,7 +206,7 @@ html.narrow .mh,html.narrow .mw{font-size:clamp(11px,calc(var(--vw)*3),18px)}
     </section>
     <section class="mid">
       <div class="head">
-        <h1>Prov &amp; läxor</h1>
+        <h1>Kalender</h1>
         <div class="seg" id="viewSeg" role="group" aria-label="Visning">
           <button data-v="week" aria-pressed="true">Vecka</button>
           <button data-v="month" aria-pressed="false">Månad</button>
@@ -236,7 +238,7 @@ html.narrow .mh,html.narrow .mw{font-size:clamp(11px,calc(var(--vw)*3),18px)}
   <button id="themeBtn" class="theme-btn" aria-label="Byt ljust/mörkt läge"></button>
 </main>
 <script id="seed-schedule" type="application/json">{"9A": [{"day": "måndag", "start": "08:20", "end": "08:40", "subject": "Kompassen", "room": "Sal 3"}, {"day": "måndag", "start": "08:40", "end": "09:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "måndag", "start": "10:00", "end": "11:00", "subject": "Språkval", "room": "Sal 5 / Sal 1 / Sal 2"}, {"day": "måndag", "start": "11:10", "end": "12:20", "subject": "Kemi", "room": "NO 1"}, {"day": "måndag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "måndag", "start": "13:00", "end": "13:45", "subject": "Idrott", "room": ""}, {"day": "måndag", "start": "14:00", "end": "15:00", "subject": "Bild", "room": "Bildsal"}, {"day": "tisdag", "start": "08:20", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "tisdag", "start": "10:00", "end": "11:20", "subject": "NO / Te-labb", "room": "NO 1 / NO 2"}, {"day": "tisdag", "start": "11:30", "end": "12:10", "subject": "Matematik", "room": "Sal 3"}, {"day": "tisdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "tisdag", "start": "12:50", "end": "13:45", "subject": "Geografi", "room": "Sal 6"}, {"day": "tisdag", "start": "14:00", "end": "15:30", "subject": "HK / Slöjd", "room": "Gläntan"}, {"day": "onsdag", "start": "08:30", "end": "09:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "onsdag", "start": "10:00", "end": "11:00", "subject": "Engelska", "room": "Sal 5"}, {"day": "onsdag", "start": "12:00", "end": "12:20", "subject": "Lunch", "room": ""}, {"day": "onsdag", "start": "12:50", "end": "14:05", "subject": "Svenska", "room": "Sal 1"}, {"day": "onsdag", "start": "14:15", "end": "15:30", "subject": "Geografi", "room": "Sal 6"}, {"day": "torsdag", "start": "08:15", "end": "09:45", "subject": "HK / Slöjd / Musik", "room": "Gläntan / Musiksal"}, {"day": "torsdag", "start": "10:00", "end": "11:00", "subject": "Engelska", "room": "Sal 5"}, {"day": "torsdag", "start": "11:10", "end": "12:10", "subject": "Språkval", "room": "Sal 2 / Sal 5 / Sal 1"}, {"day": "torsdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "torsdag", "start": "12:50", "end": "13:45", "subject": "Svenska", "room": "Sal 1"}, {"day": "torsdag", "start": "14:00", "end": "15:25", "subject": "Idrott", "room": "Tofta 2"}, {"day": "fredag", "start": "08:30", "end": "09:40", "subject": "Geografi", "room": "Sal 6"}, {"day": "fredag", "start": "10:00", "end": "11:10", "subject": "Fysik", "room": "NO 2"}, {"day": "fredag", "start": "11:20", "end": "12:10", "subject": "Språkval", "room": "Sal 1 / Sal 2 / Sal 5"}, {"day": "fredag", "start": "12:10", "end": "12:30", "subject": "Lunch", "room": ""}, {"day": "fredag", "start": "12:50", "end": "14:00", "subject": "Matematik", "room": "Sal 3"}], "9B": [{"day": "måndag", "start": "08:20", "end": "08:40", "subject": "Kompassen", "room": "Sal 1"}, {"day": "måndag", "start": "08:40", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "måndag", "start": "10:00", "end": "11:00", "subject": "Språkval", "room": "Sal 5 / Sal 1 / Sal 2"}, {"day": "måndag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "måndag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "måndag", "start": "12:50", "end": "13:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "måndag", "start": "14:00", "end": "15:00", "subject": "Idrott", "room": "Sporthall"}, {"day": "tisdag", "start": "08:20", "end": "09:40", "subject": "NO / Te-labb", "room": "NO 2 / NO 1"}, {"day": "tisdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 5"}, {"day": "tisdag", "start": "11:20", "end": "12:00", "subject": "Engelska", "room": "Sal 1"}, {"day": "tisdag", "start": "12:00", "end": "12:20", "subject": "Lunch", "room": ""}, {"day": "tisdag", "start": "12:30", "end": "13:40", "subject": "Kemi", "room": "NO 1"}, {"day": "tisdag", "start": "14:00", "end": "15:30", "subject": "HK / Slöjd", "room": "Gläntan"}, {"day": "onsdag", "start": "08:20", "end": "09:40", "subject": "Engelska", "room": "Sal 1"}, {"day": "onsdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 3"}, {"day": "onsdag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "onsdag", "start": "12:30", "end": "12:50", "subject": "Lunch", "room": ""}, {"day": "onsdag", "start": "13:00", "end": "14:00", "subject": "Bild", "room": "Bildsal"}, {"day": "torsdag", "start": "08:15", "end": "09:45", "subject": "HK / Slöjd / Musik", "room": "Gläntan / Musiksal"}, {"day": "torsdag", "start": "10:00", "end": "11:00", "subject": "Geografi", "room": "Sal 6"}, {"day": "torsdag", "start": "11:10", "end": "12:10", "subject": "Språkval", "room": "Sal 2 / Sal 5 / Sal 1"}, {"day": "torsdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "torsdag", "start": "12:50", "end": "14:00", "subject": "Fysik", "room": "NO 2"}, {"day": "torsdag", "start": "14:10", "end": "15:30", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "08:30", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "10:00", "end": "11:10", "subject": "Matematik", "room": "Sal 3"}, {"day": "fredag", "start": "11:20", "end": "12:10", "subject": "Språkval", "room": "Sal 1 / Sal 2 / Sal 5"}, {"day": "fredag", "start": "12:10", "end": "12:30", "subject": "Lunch", "room": ""}, {"day": "fredag", "start": "12:50", "end": "14:00", "subject": "Idrott", "room": "Tofta 2"}]}</script>
-<script src="kalender.js"></script>
+<script src="kalender.js?v=20261021-3"></script>
 <script>
 const TZ = "Europe/Stockholm";
 const DAYS = ["måndag","tisdag","onsdag","torsdag","fredag"];
@@ -426,15 +428,15 @@ function events() {                                   // {"2026-10-28": [händel
 const colorStyle = e => /^#[0-9a-f]{6}$/i.test(String(e.calendarColor || "")) ? ` style="--event-color:${e.calendarColor}"` : "";
 const itemHtml = e => { const k = typeOf(e.typ), lab = k === "prov" ? "Prov" : k === "laxa" ? "Läxa" : e.typ ? cap(String(e.typ)) : "Uppgift";
   return `<button type="button" class="it event-item ${k}" data-event-id="${esc(e._id)}"${colorStyle(e)}><span class="tag">${esc(lab)}</span><span class="txt">${e.amne ? `<b>${esc(e.amne)}</b> ` : ""}${esc(e.text || "")}</span></button>`; };
-const itemsHtml = list => `<div class="items">${list.length ? list.map(itemHtml).join("") : '<div class="none">–</div>'}</div>`;
+const itemsHtml = (list, date) => { const visible = list.slice(0, 2); return `<div class="items">${visible.length ? visible.map(itemHtml).join("") : '<div class="none">–</div>'}${list.length > 2 ? `<button type="button" class="more-events" data-more-date="${date}">… (${list.length - 2} fler)</button>` : ""}</div>`; };
 const dayCard = (d, list, t, extra = "") => `<article class="day${iso(d) === t ? " active" : ""}${extra}">
-  <div><div class="day-name">${WD[(d.getUTCDay() + 6) % 7]}</div><div class="day-date">${dLabel(d)}</div></div>${itemsHtml(list)}</article>`;
+  <div><div class="day-name">${WD[(d.getUTCDay() + 6) % 7]}</div><div class="day-date">${dLabel(d)}</div></div>${itemsHtml(list, iso(d))}</article>`;
 
 function weekView(ev, t) {
   const mon = addDays(baseMonday(), calOff * 7), {y, w} = weekNo(mon);
   let h = "";
-  for (let i = 0; i < 7; i++) { const d = addDays(mon, i), list = ev[iso(d)] || [];
-    h += dayCard(d, list, t); } // Visa alla sju dagar, även lördag och söndag utan aktiviteter
+  for (let i = 0; i < 5; i++) { const d = addDays(mon, i), list = ev[iso(d)] || [];
+    h += dayCard(d, list, t); }
   return {html: `<div class="menu">${h}</div>`, big: `v. ${w}`, small: `${rangeTxt(mon)} ${y}`, off: calOff};
 }
 function monthView(ev, t) {
@@ -479,6 +481,17 @@ document.getElementById("viewSeg").addEventListener("click", e => {
   renderCal();
 });
 document.getElementById("cal").addEventListener("click", e => {
+  const moreButton = e.target.closest("[data-more-date]");
+  if (moreButton) {
+    const date = moreButton.dataset.moreDate;
+    const list = events()[date] || [];
+    const prettyDate = new Intl.DateTimeFormat("sv-SE", {dateStyle:"full", timeZone:"Europe/Stockholm"}).format(new Date(date + "T12:00:00"));
+    document.getElementById("eventTitle").textContent = "Alla aktiviteter";
+    document.getElementById("eventMeta").textContent = prettyDate;
+    document.getElementById("eventDescription").textContent = list.map((item, i) => (i + 1) + ". " + (item.title || item.text || "Aktivitet") + (item.timeText ? " (" + item.timeText + ")" : "") + (item.description ? "\n" + item.description : "")).join("\n\n");
+    document.getElementById("eventDialog").showModal();
+    return;
+  }
   const eventButton = e.target.closest("[data-event-id]");
   if (eventButton) {
     const item = (typeof KALENDER !== "undefined" ? KALENDER : []).find(x => String(x._id) === eventButton.dataset.eventId);
