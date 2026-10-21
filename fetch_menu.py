@@ -161,20 +161,37 @@ def menu_from_public_feed(today):
         )
         try:
             payload = json.loads(get_text(url, {"Accept": "application/json"}))
-            week_state = payload.get("WeekState") or {}
-            for day in week_state.get("Days") or []:
-                if day.get("cancelled"):
-                    continue
-                date_text = str(day.get("date", ""))[:10]
-                if not date_text:
-                    continue
-                rows = [
-                    str(meal.get("name", "")).strip()
-                    for meal in (day.get("Meals") or [])
-                    if str(meal.get("name", "")).strip()
-                ]
-                if rows:
-                    found[date_text] = rows
+            # Det publika API:t kan svara i två format:
+            # 1) {days:[{date, main, alt}]} (formatet som används av skolans öppna endpoint)
+            # 2) {WeekState:{Days:[{date, Meals:[{name}]}]}} (äldre format)
+            simple_days = payload.get("days")
+            if isinstance(simple_days, list):
+                for day in simple_days:
+                    date_text = str(day.get("date", ""))[:10]
+                    if not date_text:
+                        continue
+                    rows = []
+                    for field in ("main", "alt"):
+                        value = day.get(field)
+                        if isinstance(value, str) and value.strip():
+                            rows.extend(part.strip() for part in re.split(r"\\s+ / \\s+", value) if part.strip())
+                    if rows:
+                        found[date_text] = rows
+            else:
+                week_state = payload.get("WeekState") or {}
+                for day in week_state.get("Days") or []:
+                    if day.get("cancelled"):
+                        continue
+                    date_text = str(day.get("date", ""))[:10]
+                    if not date_text:
+                        continue
+                    rows = [
+                        str(meal.get("name", "")).strip()
+                        for meal in (day.get("Meals") or [])
+                        if str(meal.get("name", "")).strip()
+                    ]
+                    if rows:
+                        found[date_text] = rows
         except Exception as exc:
             errors.append(f"{iso.year}-v{iso.week}: {exc}")
     if found:
