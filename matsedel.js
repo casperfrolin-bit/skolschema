@@ -36,7 +36,9 @@ var MATSEDEL = {};
         next[key][dayKey] = meals;
       }
       MATSEDEL = next;
+      // Uppdatera sidan även om data hämtades innan sidans eventlyssnare hann registreras.
       window.dispatchEvent(new Event("matsedelupdated"));
+      if (typeof window.renderMenu === "function") window.renderMenu();
       console.info("Matsedel laddad:", data.updated || "utan tidsstämpel", "veckor:", Object.keys(next).length);
     } catch (error) {
       console.warn("Kunde inte ladda menu.json:", error);
