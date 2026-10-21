@@ -70,23 +70,24 @@ var KALENDER = [];
     }).format(new Date(value));
   }
 
-  // Kategoriserar händelser så att den befintliga färgkodningen fungerar.
-  function getType(title) {
-    const text = String(title || "").toLowerCase();
-
-    if (/\bprov\b/.test(text) || text.startsWith("prov")) {
-      return "prov";
-    }
-
-    if (
-      /\bläxa\b/.test(text) ||
-      /\blaxa\b/.test(text) ||
-      /\bhomework\b/.test(text)
-    ) {
-      return "läxa";
-    }
-
-    return "Aktivitet";
+  // Tolkar ämnet från titel, beskrivning och kurskalender så att det inte bara står "Aktivitet".
+  function getType(title, calendar, description) {
+    const text = `${title || ""} ${description || ""} ${calendar || ""}`.toLowerCase();
+    if (/\\bprov\\b|\\btest\\b|\\bexamination\\b/.test(text)) return "prov";
+    if (/\\bläxa\\b|\\blaxa\\b|\\bhomework\\b|\\bglosor\\b|\\binlämning\\b|\\buppgift\\b/.test(text)) return "läxa";
+    const subjects = [
+      [/\\b(mat(?:te)?matik|matte)\\b/, "Matematik"], [/\\b(svenska|sv)\\b/, "Svenska"],
+      [/\\b(engelska|english|eng)\\b/, "Engelska"], [/\\b(spanska|español)\\b/, "Spanska"],
+      [/\\b(tyska|deutsch)\\b/, "Tyska"], [/\\b(bild)\\b/, "Bild"], [/\\b(kemi)\\b/, "Kemi"],
+      [/\\b(fysik)\\b/, "Fysik"], [/\\b(biologi|bio)\\b/, "Biologi"], [/\\b(geografi|geo)\\b/, "Geografi"],
+      [/\\b(historia|hist)\\b/, "Historia"], [/\\b(samhällskunskap|samhäll|so)\\b/, "Samhällskunskap"],
+      [/\\b(idrott)\\b/, "Idrott"], [/\\b(musik)\\b/, "Musik"], [/\\b(slöjd|slojd)\\b/, "Slöjd"],
+      [/\\b(hemkunskap|hkk)\\b/, "Hem- och konsumentkunskap"]
+    ];
+    const found = subjects.find(([pattern]) => pattern.test(text));
+    if (found) return found[1];
+    const course = String(calendar || "").trim();
+    return course && !course.includes("@") ? course : "Uppgift";
   }
 
   // Om titeln tydligt gäller 9A eller 9B visas den bara för den klassen.
@@ -145,11 +146,19 @@ var KALENDER = [];
       text = `${startTime}–${endTime} · ${title}`;
     }
 
+    const description = String(event.description || "").trim();
+    const calendar = String(event.calendar || "").trim();
+    const calendarColor = String(event.calendarColor || event.color || "").trim();
     const converted = {
       datum: startDate,
-      typ: getType(title),
+      typ: getType(title, calendar, description),
       amne: "",
       text: text,
+      title: title,
+      description: description,
+      calendar: calendar,
+      calendarColor: calendarColor,
+      timeText: allDay ? "Heldag" : `${startTime}–${endTime}`,
       klass: getClass(title),
       _id: String(event.id || `${title}-${event.start}-${index}`)
     };
@@ -205,7 +214,16 @@ var KALENDER = [];
         throw new Error("calendar.json saknar en events-lista.");
       }
 
-      const converted = rawEvents
+      // Visa kurs-/Classroom-kalendrar men dölj personlig kalender och svenska helgdagar.
+      const classroomEvents = rawEvents.filter(event => {
+        const name = String(event && event.calendar || "").trim();
+        if (!name) return true;
+        if (name.includes("@")) return false;
+        if (/^helgdagar i sverige$/i.test(name)) return false;
+        return true;
+      });
+
+      const converted = classroomEvents
         .map(convertEvent)
         .filter(Boolean)
         .sort((a, b) => {
