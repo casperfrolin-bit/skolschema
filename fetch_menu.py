@@ -146,29 +146,40 @@ def _parse_public_feed(raw, expected_week):
 
 
 def menu_from_public_feed(today):
+    """Hämta matsedeln direkt från den publika Skolmaten-endpointen utan API-token."""
     found = {}
-    last_errors = []
-    for slug in PUBLIC_SLUGS:
-        school_found = False
-        for offset in (0, 7):
-            target = today + timedelta(days=offset)
-            week = target.isocalendar().week
-            url = f"{API}/rss/week/{urllib.parse.quote(slug)}?" + urllib.parse.urlencode(
-                {"locale": "sv", "w": week}
-            )
-            try:
-                raw = get_text(url)
-                parsed = _parse_public_feed(raw, week)
-                if parsed:
-                    school_found = True
-                    found.update(parsed)
-            except Exception as exc:
-                last_errors.append(f"{slug}, vecka {week}: {exc}")
-        if school_found:
-            print(f"Hämtade matsedeln från Skolmatens publika flöde (slug: {slug}).")
-            return found
-    if last_errors:
-        print("Publikt matsedelsflöde kunde inte hämtas: " + " | ".join(last_errors[-3:]))
+    monday = today - timedelta(days=today.weekday())
+    errors = []
+    # Behåll flera veckor så att användaren kan bläddra framåt och bakåt på webbsidan.
+    for offset in range(-2, 9):
+        target = monday + timedelta(days=7 * offset)
+        iso = target.isocalendar()
+        url = (
+            f"{API}/menu/school/svensgardsskolan?"
+            + urllib.parse.urlencode({"year": iso.year, "week": iso.week})
+        )
+        try:
+            payload = json.loads(get_text(url, {"Accept": "application/json"}))
+            week_state = payload.get("WeekState") or {}
+            for day in week_state.get("Days") or []:
+                if day.get("cancelled"):
+                    continue
+                date_text = str(day.get("date", ""))[:10]
+                if not date_text:
+                    continue
+                rows = [
+                    str(meal.get("name", "")).strip()
+                    for meal in (day.get("Meals") or [])
+                    if str(meal.get("name", "")).strip()
+                ]
+                if rows:
+                    found[date_text] = rows
+        except Exception as exc:
+            errors.append(f"{iso.year}-v{iso.week}: {exc}")
+    if found:
+        print(f"Hämtade {len(found)} dagar från Skolmatens publika JSON-API.")
+    else:
+        print("Skolmatens publika JSON-API gav inga maträtter. " + " | ".join(errors[-3:]))
     return found
 
 
