@@ -99,37 +99,6 @@ html.narrow .food,html.narrow .items{font-size:clamp(12px,calc(var(--vw)*3.3),20
 html.narrow .day-name{font-size:clamp(14px,calc(var(--vw)*3.8),24px)}
 html.narrow h1{font-size:clamp(20px,calc(var(--vw)*6),36px)}
 html.narrow .menu{gap:calc(var(--vw)*2)}
-/* Mobil: matsedelsdagarna ligger på en rad och kan svepas sidledes utan att texten krymper */
-html.narrow #menu{
-  display:grid;
-  grid-auto-flow:column;
-  grid-auto-columns:minmax(78%, 1fr);
-  gap:calc(var(--vw)*3);
-  overflow-x:auto;
-  overflow-y:hidden;
-  overscroll-behavior-x:contain;
-  scroll-snap-type:x mandatory;
-  scrollbar-width:thin;
-  padding:0 1px calc(var(--vw)*2);
-}
-html.narrow #menu>.day{
-  min-width:0;
-  min-height:calc(var(--vw)*32);
-  grid-template-columns:minmax(0,1fr);
-  align-content:start;
-  align-items:start;
-  gap:calc(var(--vw)*2);
-  scroll-snap-align:start;
-  padding:calc(var(--vw)*4);
-  border-radius:calc(var(--vw)*4);
-  box-shadow:0 2px 10px #0000000b;
-}
-html.narrow #menu .day-name{font-size:clamp(16px,calc(var(--vw)*4.4),24px)}
-html.narrow #menu .day-date{font-size:clamp(12px,calc(var(--vw)*3.2),17px)}
-html.narrow #menu .food{text-align:left;font-size:clamp(13px,calc(var(--vw)*3.5),19px);line-height:1.4}
-html.narrow #menu .food div+div{margin-top:calc(var(--vw)*2)}
-html.narrow #menu .day.active{box-shadow:0 4px 14px #00000018}
-
 html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:calc(var(--vw)*3)}
 
 /* ---------- Prov & läxor, navigering ---------- */
