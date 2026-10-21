@@ -520,6 +520,70 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden) { sy
 window.addEventListener("pageshow", e => { if (e.persisted) { syncTime(); load(); } });
 setInterval(() => { if (!synced || performance.now() - lastSync > 10 * 60 * 1000) syncTime(); }, 30 * 1000);
 setInterval(load, 10 * 60 * 1000);
+
+// ---------- Svep på mobil: matsedel och kalender ----------
+(function enableSwipeNavigation() {
+  const targets = [
+    { section: ".right", content: "#menu", button: '.nav[data-for="menu"] [data-s="SWIPE"]' },
+    { section: ".mid", content: "#cal", button: '.nav[data-for="cal"] [data-s="SWIPE"]' }
+  ];
+
+  targets.forEach(({ section, content, button }) => {
+    const area = document.querySelector(section);
+    if (!area) return;
+    let startX = 0, startY = 0, startTime = 0, tracking = false;
+
+    area.addEventListener("touchstart", e => {
+      if (e.touches.length !== 1) { tracking = false; return; }
+      const t = e.touches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      startTime = performance.now();
+      tracking = true;
+    }, { passive: true });
+
+    area.addEventListener("touchend", e => {
+      if (!tracking || !e.changedTouches.length) return;
+      tracking = false;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+      const elapsed = performance.now() - startTime;
+
+      // Ignorera vertikal scroll, korta tryck och små rörelser.
+      if (Math.abs(dx) < 55 || Math.abs(dx) < Math.abs(dy) * 1.25 || elapsed > 900) return;
+
+      const panel = document.querySelector(content);
+      const nav = area.querySelector(".nav");
+      if (!panel || !nav) return;
+
+      // Vänstersvep = framåt, högersvep = bakåt.
+      const direction = dx < 0 ? 1 : -1;
+      const nextButton = nav.querySelector('[data-s="' + direction + '"]');
+      if (!nextButton) return;
+
+      // Mjuk ut-/inanimation runt den befintliga navigeringen.
+      panel.style.transition = "transform 160ms ease, opacity 160ms ease";
+      panel.style.transform = "translateX(" + (direction > 0 ? "-18px" : "18px") + ")";
+      panel.style.opacity = "0.35";
+
+      window.setTimeout(() => {
+        nextButton.click();
+        panel.style.transition = "none";
+        panel.style.transform = "translateX(" + (direction > 0 ? "18px" : "-18px") + ")";
+        panel.style.opacity = "0.35";
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          panel.style.transition = "transform 220ms ease, opacity 220ms ease";
+          panel.style.transform = "translateX(0)";
+          panel.style.opacity = "1";
+        }));
+      }, 160);
+    }, { passive: true });
+
+    area.addEventListener("touchcancel", () => { tracking = false; }, { passive: true });
+  });
+})();
+
 </script>
 </body>
 </html>
