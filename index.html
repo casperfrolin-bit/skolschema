@@ -374,6 +374,8 @@ const setNav = (id, big, small, off) => {
 // ---------- Matsedel (data i matsedel.js) ----------
 function renderMenu() {
   const mon = addDays(baseMonday(), menuOff * 7), t = todayISO(), {y, w} = weekNo(mon);
+  // Hämta den vecka besökaren faktiskt tittar på, inte alltid den vecka som råkar finnas i menu.json.
+  if (typeof window.loadMenuWeek === "function") window.loadMenuWeek(y, w);
   const wk = (typeof MATSEDEL !== "undefined" && MATSEDEL[`${y}-v${String(w).padStart(2, "0")}`]) || {};
   document.getElementById("menu").innerHTML = DK.map((k, i) => {
     const d = addDays(mon, i), rows = [].concat(wk[k] || []).map(x => String(x).trim()).filter(Boolean);
