@@ -1,4 +1,31 @@
 {
-  "updated": "2026-10-06 19:00",
-  "days": []
+  "updated": "2026-10-21",
+  "source": "https://skolmaten.se/api/4/menu/school/svensgardsskolan",
+  "days": [
+    {
+      "date": "2026-10-19",
+      "main": "Indisk Korma serveras med trippelris samt grönsaksbuffé",
+      "alt": "Kryddig korvgryta med trippelris samt grönsaksbuffé"
+    },
+    {
+      "date": "2026-10-20",
+      "main": "Nudelwok serveras med grönsaksbuffé",
+      "alt": "Kökets paj serveras med grönsaksbuffé"
+    },
+    {
+      "date": "2026-10-21",
+      "main": "Falafel i bröd med rödkålssallad, hummus, yoghurt samt klyftpotatis och grönsaksbuffé.",
+      "alt": "Panerade fishbites i bröd med rödkålssallad, hummus, yoghurt samt klyftpotatis och grönsaksbuffé."
+    },
+    {
+      "date": "2026-10-22",
+      "main": "Ärtsoppa med fläsk på Svensk köttråvara serveras med bröd grönsaksbuffé, pannkaka samt sylt.",
+      "alt": "Potatis och purjolöksoppa serveras med bröd grönsaksbuffé, pannkaka samt sylt"
+    },
+    {
+      "date": "2026-10-23",
+      "main": "Pasta Bolognese på svensk köttråvara, samt grönsaksbuffé",
+      "alt": "Färssås med pasta och grönsaksbuffé"
+    }
+  ]
 }
