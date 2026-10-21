@@ -102,7 +102,7 @@ html.narrow .menu{gap:calc(var(--vw)*2)}
 html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:calc(var(--vw)*3)}
 
 /* ---------- Prov & läxor, navigering ---------- */
-:root{--prov:#d32f2f;--glosor:#1565c0;--aktivitet:#ef6c00}
+:root{--prov:#d32f2f;--glosor:#1967D2;--aktivitet:#ef6c00}
 .prov{--c:var(--prov)}.glosor{--c:var(--glosor)}.aktivitet{--c:var(--aktivitet)}
 .right{grid-column:2;grid-row:1}
 .mid{grid-column:1/-1;grid-row:2;padding-bottom:calc(var(--vh)*2)}
@@ -120,8 +120,8 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .event-item:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
 .event-item:hover .txt{text-decoration:underline}
 .event-item:focus-visible{outline:2px solid var(--text);outline-offset:1px}
-.tag{background:var(--event-color,var(--c))}
-.dots i{background:var(--event-color,var(--c))}
+.tag{background:var(--c,var(--event-color))}
+.dots i{background:var(--c,var(--event-color))}
 .cal .day .day-name{line-height:1.2}
 .cal .day .day-date{margin-top:.2em}
 .more-events{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-weight:800;text-align:left;padding:.15em .25em;cursor:pointer;border-radius:.35em}
@@ -144,7 +144,7 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .nlabel{text-align:center;line-height:1.15;font-weight:800;font-size:clamp(12px,calc(var(--u)*1.15),30px)}
 .nlabel small{display:block;font-weight:600;color:var(--muted);font-size:.8em}
 .mgrid{display:grid;grid-template-columns:auto repeat(7,minmax(0,1fr));gap:calc(var(--u)*.35)}
-.mgrid+.day{margin-top:calc(var(--u)*.8)}
+.mgrid+.day{margin-top:calc(var(--u)*.15)}
 .mh{text-align:center;color:var(--muted);font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px)}
 .mw{font:inherit;font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px);border:0;background:none;color:var(--muted);cursor:pointer;padding:0 calc(var(--u)*.5);border-radius:calc(var(--u)*.5)}
 .mw:hover{color:var(--text)}
