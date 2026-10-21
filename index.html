@@ -413,9 +413,9 @@ function renderMenu() {
 
 // ---------- Prov & läxor (data i kalender.js) ----------
 const typeOf = t => { const s = String(t || "").toLowerCase();
-  return /^pro?v/.test(s) ? "prov" : /^l[äa]x|^hw$/.test(s) ? "laxa" : "annat"; };
+  return /^pro?v/.test(s) ? "prov" : /^glosor?$/.test(s) ? "glosor" : "aktivitet"; };
 function events() {                                   // {"2026-10-28": [händelser]} för vald klass
-  const m = {}, rank = {prov: 0, laxa: 1, annat: 2}, re = /^\d{4}-\d{2}-\d{2}$/;
+  const m = {}, rank = {prov: 0, glosor: 1, aktivitet: 2}, re = /^\d{4}-\d{2}-\d{2}$/;
   (typeof KALENDER !== "undefined" && Array.isArray(KALENDER) ? KALENDER : []).forEach(e => {
     if (!e || !re.test(e.datum || "")) return;
     if (e.klass && !String(e.klass).toUpperCase().includes(cls)) return;
@@ -426,7 +426,7 @@ function events() {                                   // {"2026-10-28": [händel
   return m;
 }
 const colorStyle = e => /^#[0-9a-f]{6}$/i.test(String(e.calendarColor || "")) ? ` style="--event-color:${e.calendarColor}"` : "";
-const itemHtml = e => { const k = typeOf(e.typ), lab = k === "prov" ? "Prov" : k === "laxa" ? "Läxa" : e.typ ? cap(String(e.typ)) : "Uppgift";
+const itemHtml = e => { const k = typeOf(e.typ), lab = k === "prov" ? "Prov" : k === "glosor" ? "Glosor" : "Aktivitet";
   return `<button type="button" class="it event-item ${k}" data-event-id="${esc(e._id)}"${colorStyle(e)}><span class="tag">${esc(lab)}</span><span class="txt">${e.amne ? `<b>${esc(e.amne)}</b> ` : ""}${esc(e.text || "")}</span></button>`; };
 const itemsHtml = (list, date) => { const visible = list.slice(0, 2); return `<div class="items">${visible.length ? visible.map(itemHtml).join("") : '<div class="none">–</div>'}${list.length > 2 ? `<button type="button" class="more-events" data-more-date="${date}">… (${list.length - 2} fler)</button>` : ""}</div>`; };
 const dayCard = (d, list, t, extra = "") => `<article class="day${iso(d) === t ? " active" : ""}${extra}">
