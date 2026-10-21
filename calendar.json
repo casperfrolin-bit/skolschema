@@ -7033,6 +7033,14 @@
       "allDay": false
     },
     {
+      "id": "casper.frolin@utb.helsingborg.se::75ij4opm64p38bb36srj4b9k61j38bb16pj3ib9g6op3iopicoo30cb5c8@google.com",
+      "calendar": "casper.frolin@utb.helsingborg.se",
+      "title": "Samtal",
+      "start": "2026-10-24T07:00:00.000Z",
+      "end": "2026-10-24T08:00:00.000Z",
+      "allDay": false
+    },
+    {
       "id": "sv.swedish#holiday@group.v.calendar.google.com::20261025_dl9k8vde4d7qdl3ad1cs9rc48o@google.com",
       "calendar": "Helgdagar i Sverige",
       "title": "Vintertid",
