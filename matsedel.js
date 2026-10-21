@@ -15,6 +15,51 @@ var MATSEDEL = {};
     return { year, week };
   }
 
+  const loadedWeeks = new Set();
+  const pendingWeeks = new Set();
+
+  function addWeekPayload(payload, requestedYear, requestedWeek) {
+    const days = Array.isArray(payload.days) ? payload.days : null;
+    const legacyDays = payload.WeekState && Array.isArray(payload.WeekState.Days) ? payload.WeekState.Days : null;
+    const list = days || legacyDays || [];
+    const next = { ...MATSEDEL };
+    const dayNames = ["mån", "tis", "ons", "tors", "fre", "lör", "sön"];
+    for (const day of list) {
+      if (day.cancelled) continue;
+      const dateText = String(day.date || "").slice(0, 10);
+      if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(dateText)) continue;
+      const date = new Date(dateText + "T12:00:00Z");
+      const { year, week } = isoWeek(date);
+      const key = year + "-v" + String(week).padStart(2, "0");
+      const dayKey = dayNames[(date.getUTCDay() + 6) % 7];
+      const meals = [];
+      if (typeof day.main === "string" && day.main.trim()) meals.push(day.main.trim());
+      if (typeof day.alt === "string" && day.alt.trim()) meals.push(...day.alt.split(/\\s+\\/\\s+/).map(x => x.trim()).filter(Boolean));
+      if (!days && Array.isArray(day.Meals)) {
+        for (const meal of day.Meals) if (meal && typeof meal.name === "string" && meal.name.trim()) meals.push(meal.name.trim());
+      }
+      if (meals.length) { if (!next[key]) next[key] = {}; next[key][dayKey] = meals; }
+    }
+    MATSEDEL = next;
+    loadedWeeks.add(requestedYear + "-v" + String(requestedWeek).padStart(2, "0"));
+    window.dispatchEvent(new Event("matsedelupdated"));
+  }
+
+  window.loadMenuWeek = async function (year, week) {
+    const key = year + "-v" + String(week).padStart(2, "0");
+    if (loadedWeeks.has(key) || pendingWeeks.has(key)) return;
+    pendingWeeks.add(key);
+    try {
+      const url = "https://skolmaten.se/api/4/menu/school/svensgardsskolan?year=" + encodeURIComponent(year) + "&week=" + encodeURIComponent(week);
+      const response = await fetch(url, { cache: "no-store" });
+      if (!response.ok) throw new Error("Skolmaten svarade " + response.status);
+      addWeekPayload(await response.json(), year, week);
+      console.info("Hämtade vald matsedelsvecka:", key);
+    } catch (error) {
+      console.warn("Kunde inte hämta vald matsedelsvecka direkt från Skolmaten:", key, error);
+    } finally { pendingWeeks.delete(key); }
+  };
+
   async function loadMenu() {
     try {
       const response = await fetch("./menu.json?t=" + Date.now(), { cache: "no-store" });
