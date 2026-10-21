@@ -467,6 +467,53 @@ document.addEventListener("matsedelupdated", () => { renderMenu(); });
 // Säkerställ att matsedeln ritas även om menu.json hann laddas innan eventlyssnaren kopplades.
 renderMenu();
 
+// Gör kalenderbeskrivningar läsbara: tillåt enkel formatering och klickbara HTTPS-länkar, utan osäker HTML.
+function formatDescription(raw) {
+  const doc = new DOMParser().parseFromString(String(raw || ""), "text/html");
+  const allowed = new Set(["B","STRONG","I","EM","U","P","BR","UL","OL","LI","H1","H2","H3","H4","H5","H6","BLOCKQUOTE","A"]);
+  function clean(parent) {
+    for (const node of [...parent.childNodes]) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const text = node.nodeValue;
+        const re = /https:\/\/[^\s<>"']+/g;
+        if (!re.test(text)) continue;
+        re.lastIndex = 0;
+        const frag = doc.createDocumentFragment();
+        let last = 0, match;
+        while ((match = re.exec(text))) {
+          let url = match[0], suffix = "";
+          while (/[),.!?;:]$/.test(url)) { suffix = url.slice(-1) + suffix; url = url.slice(0, -1); }
+          if (match.index > last) frag.append(doc.createTextNode(text.slice(last, match.index)));
+          const a = doc.createElement("a"); a.href = url; a.textContent = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+          frag.append(a); if (suffix) frag.append(doc.createTextNode(suffix));
+          last = match.index + match[0].length;
+        }
+        if (last < text.length) frag.append(doc.createTextNode(text.slice(last)));
+        node.replaceWith(frag);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        clean(node);
+        if (!allowed.has(node.tagName)) {
+          node.replaceWith(...node.childNodes);
+          continue;
+        }
+        for (const attr of [...node.attributes]) {
+          if (node.tagName === "A" && attr.name === "href" && /^https:\/\//i.test(attr.value)) continue;
+          node.removeAttribute(attr.name);
+        }
+        if (node.tagName === "A") {
+          if (!/^https:\/\//i.test(node.getAttribute("href") || "")) {
+            node.replaceWith(...node.childNodes);
+            continue;
+          }
+          node.setAttribute("target", "_blank"); node.setAttribute("rel", "noopener noreferrer");
+        }
+      } else node.remove();
+    }
+  }
+  clean(doc.body);
+  return doc.body.innerHTML.replace(/<p><\/p>/g, "");
+}
+
 // ---------- Knappar ----------
 document.querySelectorAll(".nav").forEach(n => n.addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return; touch();
@@ -488,7 +535,7 @@ document.getElementById("cal").addEventListener("click", e => {
     const prettyDate = new Intl.DateTimeFormat("sv-SE", {dateStyle:"full", timeZone:"Europe/Stockholm"}).format(new Date(date + "T12:00:00"));
     document.getElementById("eventTitle").textContent = "Alla aktiviteter";
     document.getElementById("eventMeta").textContent = prettyDate;
-    document.getElementById("eventDescription").textContent = list.map((item, i) => (i + 1) + ". " + (item.title || item.text || "Aktivitet") + (item.timeText ? " (" + item.timeText + ")" : "") + (item.description ? "\n" + item.description : "")).join("\n\n");
+    document.getElementById("eventDescription").innerHTML = formatDescription(list.map((item, i) => (i + 1) + ". " + (item.title || item.text || "Aktivitet") + (item.timeText ? " (" + item.timeText + ")" : "") + (item.description ? "\n" + item.description : "")).join("\n\n"));
     document.getElementById("eventDialog").showModal();
     return;
   }
@@ -499,7 +546,7 @@ document.getElementById("cal").addEventListener("click", e => {
       document.getElementById("eventTitle").textContent = item.title || item.text || "Uppgift";
       const dateText = item.datum ? new Intl.DateTimeFormat("sv-SE", {dateStyle:"full", timeZone:"Europe/Stockholm"}).format(new Date(item.datum + "T12:00:00")) : "";
       document.getElementById("eventMeta").textContent = [dateText, item.timeText, item.calendar].filter(Boolean).join(" · ");
-      document.getElementById("eventDescription").textContent = item.description || "Ingen beskrivning finns sparad för den här aktiviteten.";
+      document.getElementById("eventDescription").innerHTML = formatDescription(item.description || "Ingen beskrivning finns sparad för den här aktiviteten.");
       const dialog = document.getElementById("eventDialog");
       if (typeof dialog.showModal === "function") dialog.showModal(); else alert((item.title || "Uppgift") + "\n\n" + (item.description || "Ingen beskrivning finns."));
     }
