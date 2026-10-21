@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>9B - SchemavisarePRO</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("theme")||"light"}catch(e){}</script>
+<script>
+// Måttenheter: 1 enhet = 1 % av fönstrets storlek vid sidladdning/fönsterändring.
+// Vid webbläsarzoom (Ctrl +/-) ändras inte enheterna, så hela sidan skalas och flyttas som en helhet.
+(function () {
+  var d = document.documentElement, lastPhys = window.innerWidth * window.devicePixelRatio;
+  function apply() {
+    var w = window.innerWidth, h = window.innerHeight;
+    d.style.setProperty("--vw", w / 100 + "px");
+    d.style.setProperty("--vh", h / 100 + "px");
+    d.classList.toggle("wide", w >= h && w >= 900);
+    d.classList.toggle("narrow", w <= 900);
+    lastPhys = w * window.devicePixelRatio;
+  }
+  apply();
+  window.addEventListener("resize", function () {
+    // Zoom ändrar CSS-bredden men inte antalet riktiga pixlar -> gör inget. Annars är det en riktig storleksändring.
+    if (Math.abs(window.innerWidth * window.devicePixelRatio - lastPhys) > 4) apply();
+  });
+})();
+</script>
+<style>
+*{box-sizing:border-box}
+:root{--vw:1vw;--vh:1vh;--u:min(var(--vw),calc(var(--vh)*1.7));--h:calc(clamp(26px,calc(var(--vw)*3.2),58px)*1.1 + var(--vh)*1.5);--bg:#f4f4f4;--panel:#fff;--text:#111;--muted:#666;--line:#d9d9d9;--hl:#111;--hl-text:#fff}
+:root[data-theme=dark]{--bg:#151515;--panel:#222;--text:#f2f2f2;--muted:#aaa;--line:#3a3a3a;--hl:#f2f2f2;--hl-text:#111}
+html{height:100%;background:var(--bg)}
+body{margin:0;min-height:100%;display:flex;font-family:system-ui,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.screen{position:relative;flex:none;margin:auto;width:calc(var(--vw)*100);min-height:calc(var(--vh)*100);display:flex;flex-direction:column;gap:calc(var(--vh)*2);padding:calc(var(--vh)*2) calc(var(--vw)*2.5)}
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:calc(var(--vw)*2)}
+.time{display:flex;flex-direction:column;gap:calc(var(--vh)*.6)}
+.class-sel{align-self:flex-start;margin-top:calc(var(--vh)*.8);font:inherit;font-size:clamp(14px,calc(var(--vw)*1.6),28px);font-weight:700;padding:.35em 1.8em .35em .8em;border:2px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);cursor:pointer}
+.class-sel:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+.class-name{font-size:clamp(35.2px,calc(var(--vw)*5.6),104px);font-weight:800;line-height:1;text-align:center}
+.clock{font-size:clamp(27.2px,calc(var(--vw)*3.6),64px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.date{font-size:clamp(12.8px,calc(var(--vw)*1.44),25.6px);color:var(--muted)}
+.now{margin-top:calc(var(--vh)*1);width:0;min-width:100%}
+.layout{flex:1;display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:calc(var(--vw)*2);min-height:0}
+.left,.mid,.right{display:flex;flex-direction:column;min-height:0}
+.left{align-items:center;padding-top:var(--h)}
+.right{padding-bottom:calc(var(--vh)*4)}
+.sched{width:min(100%,calc((var(--vh)*64 - var(--h))*.975))}
+.schedule-img{display:block;position:relative;overflow:hidden}
+.time-line{position:absolute;left:0;right:0;height:2px;margin-top:-1px;background:#e53935;display:none;pointer-events:none}
+.schedule-img img{display:block;width:100%;height:auto}
+.img-dark{display:none}
+:root[data-theme=dark].has-dark .img-light{display:none}
+:root[data-theme=dark].has-dark .img-dark{display:block}
+:root[data-theme=dark]:not(.has-dark) .img-light{filter:invert(1)}
+/* Hel A4-bild: tabellen klipps ut med CSS (ingen fetch/base64/SVG-omväg) */
+.schedule-img.crop{aspect-ratio:1090/1064}
+.schedule-img.crop .img-light{position:absolute;display:block;width:109.27%;max-width:none;height:auto;left:-4.587%;top:-23.68%}
+.schema-err{display:none;padding:1.2em;border:2px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center;font-size:clamp(12px,calc(var(--vw)*1.2),20px)}
+.schedule-img.err .schema-err{display:block}
+.schedule-img.err img{display:none!important}
+.current{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:0 calc(var(--vw)*2)}
+.lesson{font-size:clamp(20.8px,calc(var(--vw)*2.88),51.2px);font-weight:800}
+.lesson-time{font-size:clamp(16px,calc(var(--vw)*1.92),35.2px);font-weight:700;color:var(--muted);white-space:nowrap}
+.remaining{font-size:clamp(11.2px,calc(var(--vw)*1.2),20.8px);color:var(--muted);margin-top:calc(var(--vh)*.6);font-variant-numeric:tabular-nums}
+/* Matsedel: kompakt, skalas efter enhetens storlek (--u = den minsta av bredd/höjd-enheten) */
+h1{margin:0 0 calc(var(--u)*.9);font-size:clamp(18px,calc(var(--u)*2.1),48px);line-height:1.1;font-weight:800}
+.menu{flex:none;display:flex;flex-direction:column;gap:calc(var(--u)*.6);width:100%}
+.day{display:grid;grid-template-columns:auto 1fr;gap:calc(var(--u)*1.4);align-items:center;background:var(--panel);border:2px solid var(--line);border-radius:calc(var(--u)*1);padding:calc(var(--u)*.7) calc(var(--u)*1.2)}
+.day.active{background:var(--hl);color:var(--hl-text);border-color:var(--hl)}
+.day-name{font-size:clamp(12px,calc(var(--u)*1.15),30px);font-weight:800}
+.day-date{font-size:clamp(9.5px,calc(var(--u)*.75),20px);opacity:.7}
+.food,.items{text-align:right;font-size:clamp(10.5px,calc(var(--u)*.95),26px);line-height:1.25}
+.food div+div{opacity:.8;margin-top:calc(var(--u)*.25)}
+.theme-btn{position:fixed;right:max(calc(var(--vw)*2),env(safe-area-inset-right));bottom:max(calc(var(--vh)*2),env(safe-area-inset-bottom));width:clamp(38px,calc(var(--vw)*3.4),54px);aspect-ratio:1;border-radius:50%;border:2px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer;display:grid;place-items:center}
+.theme-btn svg{width:55%;height:55%}
+.theme-btn:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+html.wide .screen{height:calc(var(--vh)*100);min-height:0;overflow:hidden}
+html.wide .layout{grid-template-columns:auto minmax(0,1fr) minmax(0,calc(var(--vw)*26));margin:0}
+html.wide .left{height:100%;min-height:0;padding-top:0;justify-content:center}
+html.wide .right{position:relative;height:80%;align-self:center;justify-content:flex-start;padding-bottom:0}
+html.wide h1{position:absolute;left:0;bottom:100%;margin:0 0 calc(var(--u)*.6)}
+html.wide .food,html.wide .items{font-size:clamp(11px,calc(var(--u)*1.1),30px)}
+html.wide .day-name{font-size:clamp(13px,calc(var(--u)*1.3),34px)}
+html.wide .sched{height:80%;align-self:center;width:auto;display:grid;grid-template-columns:min-content;grid-template-rows:minmax(0,1fr) auto}
+html.wide .schedule-img{min-height:0}
+html.wide .schedule-img img{height:100%;width:auto;aspect-ratio:1090/1064}
+html.wide .lesson{font-size:clamp(14.4px,calc(var(--vh)*2.56),51.2px);line-height:1.15}
+html.wide .lesson-time{font-size:clamp(11.2px,calc(var(--vh)*1.92),35.2px)}
+html.wide .remaining{font-size:clamp(10.4px,calc(var(--vh)*1.52),22.4px)}
+html.wide .theme-btn{position:absolute}
+html.narrow .screen{padding-bottom:calc(var(--vw)*18)}
+html.narrow .left{padding-top:0}
+html.narrow .layout{grid-template-columns:1fr}
+html.narrow .schedule-img img{height:auto}
+html.narrow .sched{width:100%}
+html.narrow .food,html.narrow .items{font-size:clamp(12px,calc(var(--vw)*3.3),20px)}
+html.narrow .day-name{font-size:clamp(14px,calc(var(--vw)*3.8),24px)}
+html.narrow h1{font-size:clamp(20px,calc(var(--vw)*6),36px)}
+html.narrow .menu{gap:calc(var(--vw)*2)}
+html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:calc(var(--vw)*3)}
+
+/* ---------- Prov & läxor, navigering ---------- */
+:root{--prov:#d32f2f;--laxa:#1565c0;--annat:#ef6c00}
+.prov{--c:var(--prov)}.laxa{--c:var(--laxa)}.annat{--c:var(--annat)}
+.right{grid-column:2;grid-row:1}
+.mid{grid-column:1/-1;grid-row:2;padding-bottom:calc(var(--vh)*2)}
+.head{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1);margin:0 0 calc(var(--u)*.9)}
+.head h1{margin:0}
+.seg{display:flex;border:2px solid var(--line);border-radius:calc(var(--u)*.9);overflow:hidden;background:var(--panel)}
+.seg button{font:inherit;font-weight:700;font-size:clamp(11px,calc(var(--u)*1),24px);padding:.35em .9em;border:0;background:none;color:var(--text);cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--hl);color:var(--hl-text)}
+.cal{flex:0 1 auto;min-height:0;overflow:auto;padding:3px;margin:-3px;scrollbar-width:thin}
+.cal .day{grid-template-columns:calc(var(--u)*7) minmax(0,1fr)}
+.items{text-align:left;display:flex;flex-direction:column;gap:calc(var(--u)*.4);min-width:0}
+.it{display:flex;gap:.6em;align-items:baseline}
+.tag{flex:none;background:var(--c);color:#fff;font-weight:800;font-size:.8em;line-height:1.3;padding:.05em .55em;border-radius:.5em}
+.txt{min-width:0;overflow-wrap:anywhere}
+.none{opacity:.45}
+.nav{margin-top:auto;padding-top:calc(var(--u)*1);display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:calc(var(--u)*.6)}
+.nbtn{font:inherit;font-weight:800;font-size:clamp(14px,calc(var(--u)*1.3),30px);min-width:clamp(38px,calc(var(--u)*3),60px);height:clamp(38px,calc(var(--u)*3),60px);padding:0 .7em;border:2px solid var(--line);border-radius:calc(var(--u)*.9);background:var(--panel);color:var(--text);cursor:pointer}
+.nbtn:hover{border-color:var(--text)}
+.nbtn:focus-visible,.seg button:focus-visible,.md:focus-visible,.mw:focus-visible{outline:3px solid var(--text);outline-offset:2px}
+.today-btn{font-size:clamp(11px,calc(var(--u)*1),22px)}
+.nlabel{text-align:center;line-height:1.15;font-weight:800;font-size:clamp(12px,calc(var(--u)*1.15),30px)}
+.nlabel small{display:block;font-weight:600;color:var(--muted);font-size:.8em}
+.mgrid{display:grid;grid-template-columns:auto repeat(7,minmax(0,1fr));gap:calc(var(--u)*.35)}
+.mgrid+.day{margin-top:calc(var(--u)*.8)}
+.mh{text-align:center;color:var(--muted);font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px)}
+.mw{font:inherit;font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px);border:0;background:none;color:var(--muted);cursor:pointer;padding:0 calc(var(--u)*.5);border-radius:calc(var(--u)*.5)}
+.mw:hover{color:var(--text)}
+.md{font:inherit;font-weight:700;font-size:clamp(11px,calc(var(--u)*1),26px);aspect-ratio:1/.9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*.2);padding:0;border:2px solid var(--line);border-radius:calc(var(--u)*.7);background:var(--panel);color:var(--text);cursor:pointer}
+.md.out{opacity:.4}
+.md.today{background:var(--hl);color:var(--hl-text);border-color:var(--hl)}
+.md.sel{outline:3px solid var(--text);outline-offset:1px}
+.dots{display:flex;gap:2px;height:calc(var(--u)*.55)}
+.dots i{width:calc(var(--u)*.55);height:calc(var(--u)*.55);min-width:5px;min-height:5px;border-radius:50%;background:var(--c)}
+html.wide .layout>.right,html.wide .layout>.mid{grid-column:auto;grid-row:auto}
+html.wide .mid{position:relative;height:80%;align-self:center;padding-bottom:0}
+html.wide .head{position:absolute;left:0;right:0;bottom:100%;margin:0 0 calc(var(--u)*.6)}
+html.wide .head h1{position:static;margin:0}
+html.narrow .layout>.right,html.narrow .layout>.mid{grid-column:auto;grid-row:auto}
+html.narrow .layout{row-gap:calc(var(--vw)*6)}
+html.narrow .cal .day{grid-template-columns:calc(var(--vw)*26) minmax(0,1fr)}
+html.narrow .nbtn{font-size:clamp(16px,calc(var(--vw)*5),28px);min-width:clamp(42px,calc(var(--vw)*11),56px);height:clamp(42px,calc(var(--vw)*11),56px)}
+html.narrow .today-btn{font-size:clamp(12px,calc(var(--vw)*3.2),18px)}
+html.narrow .nlabel{font-size:clamp(14px,calc(var(--vw)*4),22px)}
+html.narrow .seg button{font-size:clamp(13px,calc(var(--vw)*3.6),20px)}
+html.narrow .md{font-size:clamp(12px,calc(var(--vw)*3.6),22px)}
+html.narrow .mh,html.narrow .mw{font-size:clamp(11px,calc(var(--vw)*3),18px)}
+</style>
+</head>
+<body>
+<main class="screen">
+  <header class="top">
+    <div class="time">
+      <div id="clock" class="clock"></div>
+      <div id="date" class="date"></div>
+      <select id="classSel" class="class-sel" aria-label="Välj klass">
+        <option value="9A">9A</option>
+        <option value="9B">9B</option>
+      </select>
+    </div>
+    <div id="className" class="class-name">9B</div>
+    <div></div>
+  </header>
+  <div class="layout">
+    <section class="left">
+    <div class="sched">
+      <div id="schemaBox" class="schedule-img">
+        <img id="imgLight" class="img-light" alt="Schema">
+        <img id="imgDark" class="img-dark" alt="Schema">
+        <div id="schemaErr" class="schema-err"></div>
+        <div id="timeLine" class="time-line"></div>
+      </div>
+    <div class="now">
+        <div class="current">
+          <div id="lesson" class="lesson"></div>
+          <div id="lessonTime" class="lesson-time"></div>
+        </div>
+        <div id="remaining" class="remaining"></div>
+      </div>
+    </div>
+    </section>
+    <section class="mid">
+      <div class="head">
+        <h1>Prov &amp; läxor</h1>
+        <div class="seg" id="viewSeg" role="group" aria-label="Visning">
+          <button data-v="week" aria-pressed="true">Vecka</button>
+          <button data-v="month" aria-pressed="false">Månad</button>
+        </div>
+      </div>
+      <div id="cal" class="cal"></div>
+      <div class="nav" data-for="cal">
+        <button class="nbtn" data-s="-1" aria-label="Föregående">‹</button>
+        <div class="nlabel" id="calLbl"></div>
+        <button class="nbtn today-btn" id="calToday">Idag</button>
+        <button class="nbtn" data-s="1" aria-label="Nästa">›</button>
+      </div>
+    </section>
+    <section class="right">
+      <h1>Matsedel</h1>
+      <div id="menu" class="menu"></div>
+      <div class="nav" data-for="menu">
+        <button class="nbtn" data-s="-1" aria-label="Föregående vecka">‹</button>
+        <div class="nlabel" id="menuLbl"></div>
+        <button class="nbtn today-btn" id="menuToday">Idag</button>
+        <button class="nbtn" data-s="1" aria-label="Nästa vecka">›</button>
+      </div>
+    </section>
+  </div>
+  <button id="themeBtn" class="theme-btn" aria-label="Byt ljust/mörkt läge"></button>
+</main>
+<script id="seed-schedule" type="application/json">{"9A": [{"day": "måndag", "start": "08:20", "end": "08:40", "subject": "Kompassen", "room": "Sal 3"}, {"day": "måndag", "start": "08:40", "end": "09:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "måndag", "start": "10:00", "end": "11:00", "subject": "Språkval", "room": "Sal 5 / Sal 1 / Sal 2"}, {"day": "måndag", "start": "11:10", "end": "12:20", "subject": "Kemi", "room": "NO 1"}, {"day": "måndag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "måndag", "start": "13:00", "end": "13:45", "subject": "Idrott", "room": ""}, {"day": "måndag", "start": "14:00", "end": "15:00", "subject": "Bild", "room": "Bildsal"}, {"day": "tisdag", "start": "08:20", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "tisdag", "start": "10:00", "end": "11:20", "subject": "NO / Te-labb", "room": "NO 1 / NO 2"}, {"day": "tisdag", "start": "11:30", "end": "12:10", "subject": "Matematik", "room": "Sal 3"}, {"day": "tisdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "tisdag", "start": "12:50", "end": "13:45", "subject": "Geografi", "room": "Sal 6"}, {"day": "tisdag", "start": "14:00", "end": "15:30", "subject": "HK / Slöjd", "room": "Gläntan"}, {"day": "onsdag", "start": "08:30", "end": "09:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "onsdag", "start": "10:00", "end": "11:00", "subject": "Engelska", "room": "Sal 5"}, {"day": "onsdag", "start": "12:00", "end": "12:20", "subject": "Lunch", "room": ""}, {"day": "onsdag", "start": "12:50", "end": "14:05", "subject": "Svenska", "room": "Sal 1"}, {"day": "onsdag", "start": "14:15", "end": "15:30", "subject": "Geografi", "room": "Sal 6"}, {"day": "torsdag", "start": "08:15", "end": "09:45", "subject": "HK / Slöjd / Musik", "room": "Gläntan / Musiksal"}, {"day": "torsdag", "start": "10:00", "end": "11:00", "subject": "Engelska", "room": "Sal 5"}, {"day": "torsdag", "start": "11:10", "end": "12:10", "subject": "Språkval", "room": "Sal 2 / Sal 5 / Sal 1"}, {"day": "torsdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "torsdag", "start": "12:50", "end": "13:45", "subject": "Svenska", "room": "Sal 1"}, {"day": "torsdag", "start": "14:00", "end": "15:25", "subject": "Idrott", "room": "Tofta 2"}, {"day": "fredag", "start": "08:30", "end": "09:40", "subject": "Geografi", "room": "Sal 6"}, {"day": "fredag", "start": "10:00", "end": "11:10", "subject": "Fysik", "room": "NO 2"}, {"day": "fredag", "start": "11:20", "end": "12:10", "subject": "Språkval", "room": "Sal 1 / Sal 2 / Sal 5"}, {"day": "fredag", "start": "12:10", "end": "12:30", "subject": "Lunch", "room": ""}, {"day": "fredag", "start": "12:50", "end": "14:00", "subject": "Matematik", "room": "Sal 3"}], "9B": [{"day": "måndag", "start": "08:20", "end": "08:40", "subject": "Kompassen", "room": "Sal 1"}, {"day": "måndag", "start": "08:40", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "måndag", "start": "10:00", "end": "11:00", "subject": "Språkval", "room": "Sal 5 / Sal 1 / Sal 2"}, {"day": "måndag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "måndag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "måndag", "start": "12:50", "end": "13:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "måndag", "start": "14:00", "end": "15:00", "subject": "Idrott", "room": "Sporthall"}, {"day": "tisdag", "start": "08:20", "end": "09:40", "subject": "NO / Te-labb", "room": "NO 2 / NO 1"}, {"day": "tisdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 5"}, {"day": "tisdag", "start": "11:20", "end": "12:00", "subject": "Engelska", "room": "Sal 1"}, {"day": "tisdag", "start": "12:00", "end": "12:20", "subject": "Lunch", "room": ""}, {"day": "tisdag", "start": "12:30", "end": "13:40", "subject": "Kemi", "room": "NO 1"}, {"day": "tisdag", "start": "14:00", "end": "15:30", "subject": "HK / Slöjd", "room": "Gläntan"}, {"day": "onsdag", "start": "08:20", "end": "09:40", "subject": "Engelska", "room": "Sal 1"}, {"day": "onsdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 3"}, {"day": "onsdag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "onsdag", "start": "12:30", "end": "12:50", "subject": "Lunch", "room": ""}, {"day": "onsdag", "start": "13:00", "end": "14:00", "subject": "Bild", "room": "Bildsal"}, {"day": "torsdag", "start": "08:15", "end": "09:45", "subject": "HK / Slöjd / Musik", "room": "Gläntan / Musiksal"}, {"day": "torsdag", "start": "10:00", "end": "11:00", "subject": "Geografi", "room": "Sal 6"}, {"day": "torsdag", "start": "11:10", "end": "12:10", "subject": "Språkval", "room": "Sal 2 / Sal 5 / Sal 1"}, {"day": "torsdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "torsdag", "start": "12:50", "end": "14:00", "subject": "Fysik", "room": "NO 2"}, {"day": "torsdag", "start": "14:10", "end": "15:30", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "08:30", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "10:00", "end": "11:10", "subject": "Matematik", "room": "Sal 3"}, {"day": "fredag", "start": "11:20", "end": "12:10", "subject": "Språkval", "room": "Sal 1 / Sal 2 / Sal 5"}, {"day": "fredag", "start": "12:10", "end": "12:30", "subject": "Lunch", "room": ""}, {"day": "fredag", "start": "12:50", "end": "14:00", "subject": "Idrott", "room": "Tofta 2"}]}</script>
+<script src="matsedel.js"></script>
+<script src="kalender.js"></script>
+<script>
+const TZ = "Europe/Stockholm";
+const DAYS = ["måndag","tisdag","onsdag","torsdag","fredag"];
+// Tidslinjen: y-position (px i den beskurna bilden, 1064 px hög) för 07:00 och pixlar per timme.
+const Y7 = 62.5, PER_HOUR = 90.36, IMG_H = 1064;
+const SCHEMA_IMG = {
+  "9A": "schema-9A.png",
+  "9B": "schema-9B.png"
+};
+const readSeed = id => { try { return JSON.parse(document.getElementById(id).textContent); } catch { return null; } };
+const readCache = k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
+const saveCache = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
+// Det senast kända visas direkt; färsk data hämtas i bakgrunden och byts in när den kommer.
+// Schemat ligger som {"9A": [...], "9B": [...]}. En gammal platt lista räknas som 9B.
+const normSched = v => Array.isArray(v) ? {"9A": [], "9B": v} : (v && typeof v === "object" ? v : null);
+let schedules = [normSched(readCache("schedule")), normSched(readSeed("seed-schedule"))].find(Boolean) || {};
+let cls = "9B";
+try { const q = new URLSearchParams(location.search).get("klass"); const s = q || localStorage.getItem("klass"); if (SCHEMA_IMG[s]) cls = s; } catch {}
+
+// ---------- Tid från internet (inte enhetens klocka) ----------
+// Klockan räknar vidare med performance.now(), så den påverkas inte om någon ändrar enhetens klocka.
+let base = {server: Date.now(), perf: performance.now()}, synced = false, lastSync = -1e9, trusted = false;
+try { const o = localStorage.getItem("timeOffset"); if (o !== null && Number.isFinite(+o)) { base.server += +o; trusted = true; } } catch {}
+const now = () => new Date(base.server + (performance.now() - base.perf));
+const getJSON = async (url) => {
+  const r = await fetch(url, {cache: "no-store"});
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+};
+const TIME_SOURCES = [
+  async () => { const j = await getJSON("https://worldtimeapi.org/api/timezone/Etc/UTC");
+    return j.unixtime * 1000 + (+(String(j.datetime).match(/\.(\d{3})/)?.[1] ?? 0)); },
+  async () => { const j = await getJSON("https://timeapi.io/api/time/current/zone?timeZone=UTC");
+    return Date.parse(String(j.dateTime).replace(/(\.\d{3})\d*/, "$1") + "Z"); },
+  async () => { const r = await fetch(location.href.split("#")[0], {method: "HEAD", cache: "no-store"});
+    const d = r.headers.get("Date"); if (!d) throw new Error("no date"); return Date.parse(d) + 500; }
+];
+const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
+async function syncTime() {
+  // Alla källor frågas samtidigt; den första (i prioritetsordning) som svarar används.
+  const runs = TIME_SOURCES.map(src => { const p0 = performance.now();
+    return withTimeout(src(), 3000).then(ms => ({ms, p0, p1: performance.now()})); });
+  runs.forEach(r => r.catch(() => {}));
+  for (const r of runs) {
+    try {
+      const {ms, p0, p1} = await r;
+      if (!Number.isFinite(ms)) continue;
+      base = {server: ms + (p1 - p0) / 2, perf: p1};
+      synced = trusted = true; lastSync = p1;
+      try { localStorage.setItem("timeOffset", String(Math.round(base.server - Date.now()))); } catch {}
+      document.getElementById("clock").style.opacity = "";
+      tick();
+      return true;
+    } catch {}
+  }
+  if (!trusted) document.getElementById("clock").style.opacity = ".55"; // visar att internettid saknas
+  return false;
+}
+
+function parts(d) {
+  const o = {};
+  new Intl.DateTimeFormat("sv-SE", {timeZone:TZ, year:"numeric", month:"2-digit", day:"2-digit",
+    hour:"2-digit", minute:"2-digit", second:"2-digit", hourCycle:"h23"})
+    .formatToParts(d).forEach(p => o[p.type] = p.value);
+  return o;
+}
+function isoWeek(y, m, d) {
+  const t = new Date(Date.UTC(y, m - 1, d));
+  t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+  return Math.ceil(((t - Date.UTC(t.getUTCFullYear(), 0, 1)) / 864e5 + 1) / 7);
+}
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const hms = s => [Math.floor(s/3600), Math.floor(s%3600/60), s%60];
+const toMin = s => { const [h,m] = s.split(":").map(Number); return h*60+m; };
+
+// ---------- Tema ----------
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem("theme", t); } catch {}
+  const sun = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  const moon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>';
+  document.getElementById("themeBtn").innerHTML = t === "dark" ? sun : moon;
+}
+let saved = "light"; try { saved = localStorage.getItem("theme") || "light"; } catch {}
+setTheme(saved);
+document.getElementById("themeBtn").onclick = () =>
+  setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+
+// ---------- Rendering ----------
+function tick() {
+  const d = now(), p = parts(d);
+  const weekday = cap(new Intl.DateTimeFormat("sv-SE", {timeZone:TZ, weekday:"long"}).format(d));
+  const month = new Intl.DateTimeFormat("sv-SE", {timeZone:TZ, month:"long"}).format(d);
+  const week = isoWeek(+p.year, +p.month, +p.day);
+  document.getElementById("clock").textContent = `${p.hour}:${p.minute}:${p.second}`;
+  document.getElementById("date").textContent = `${weekday} ${+p.day} ${month} ${p.year} (v. ${week})`;
+
+  const sec = +p.hour*3600 + +p.minute*60 + +p.second;
+  const line = document.getElementById("timeLine");
+  const hrs = sec/3600;
+  if (DAYS.includes(weekday.toLowerCase()) && hrs >= 7 && hrs < 18) {
+    const y = Y7 + (hrs - 7) * PER_HOUR;
+    line.style.top = (y / IMG_H * 100) + "%";
+    line.style.display = "block";
+  } else line.style.display = "none";
+  const lessons = (schedules[cls] || []).filter(x => x.day === weekday.toLowerCase());
+  const cur = lessons.find(x => sec >= toMin(x.start)*60 && sec < toMin(x.end)*60);
+  const next = lessons.find(x => toMin(x.start)*60 > sec);
+  const el = id => document.getElementById(id);
+  const fmt = s => { const [h,m,sc] = hms(s); return (h ? h + " tim " : "") + m + " min " + sc + " sek"; };
+  const L = cur || next;
+  const room = L && L.room ? ` (${L.room})` : "";
+  if (cur) {
+    el("lesson").textContent = cur.subject + room;
+    el("lessonTime").textContent = `${cur.start.replace(":",".")}–${cur.end.replace(":",".")}`;
+    el("remaining").textContent = "Tid till slut: " + fmt(toMin(cur.end)*60 - sec);
+  } else if (next) {
+    const started = lessons.some(x => toMin(x.end)*60 <= sec);
+    el("lesson").textContent = started ? "Rast" : "Skoldagen har inte börjat";
+    el("lessonTime").textContent = `Nästa lektion: ${next.subject}${room}`;
+    el("remaining").textContent = "Börjar om " + fmt(toMin(next.start)*60 - sec);
+  } else {
+    el("lesson").textContent = "Ingen lektion";
+    el("lessonTime").textContent = "";
+    el("remaining").textContent = "";
+  }
+  const t = p.year + "-" + p.month + "-" + p.day;
+  if (t !== lastDay) { lastDay = t; renderAll(); }   // ny dag -> rita om matsedel och kalender
+}
+
+// ---------- Datum ----------
+const MD = ["jan","feb","mar","apr","maj","jun","jul","aug","sep","okt","nov","dec"];
+const MF = ["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
+const WD = ["Måndag","Tisdag","Onsdag","Torsdag","Fredag","Lördag","Söndag"];
+const DK = ["mån","tis","ons","tors","fre"];                       // nycklarna i matsedel.js
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const utc = s => { const [y, m, d] = s.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d)); };
+const iso = d => d.toISOString().slice(0, 10);
+const addDays = (d, n) => new Date(d.getTime() + n * 864e5);
+const monOf = d => addDays(d, -((d.getUTCDay() + 6) % 7));
+const dLabel = d => d.getUTCDate() + " " + MD[d.getUTCMonth()];
+const weekNo = mon => { const th = addDays(mon, 3), y = th.getUTCFullYear(); return {y, w: isoWeek(y, th.getUTCMonth() + 1, th.getUTCDate())}; };
+const rangeTxt = mon => { const b = addDays(mon, 4);
+  return mon.getUTCMonth() === b.getUTCMonth() ? `${mon.getUTCDate()}–${dLabel(b)}` : `${dLabel(mon)} – ${dLabel(b)}`; };
+const todayISO = () => { const p = parts(now()); return `${p.year}-${p.month}-${p.day}`; };
+// Veckan som visas från start. Lördag/söndag visar nästa vecka.
+const baseMonday = () => { const t = utc(todayISO()), wd = t.getUTCDay() || 7; return addDays(t, -(wd - 1) + (wd > 5 ? 7 : 0)); };
+
+// ---------- Tillstånd: hur många veckor/månader man bläddrat från "nu" ----------
+let menuOff = 0, calOff = 0, monOff = 0, selDay = null, touched = 0, lastDay = "";
+let calView = "week"; try { if (localStorage.getItem("calView") === "month") calView = "month"; } catch {}
+const touch = () => { touched = performance.now(); };
+const setNav = (id, big, small, off) => {
+  document.getElementById(id + "Lbl").innerHTML = `${esc(big)}<small>${esc(small)}</small>`;
+  document.getElementById(id + "Today").style.visibility = off ? "visible" : "hidden";
+};
+
+// ---------- Matsedel (data i matsedel.js) ----------
+function renderMenu() {
+  const mon = addDays(baseMonday(), menuOff * 7), t = todayISO(), {y, w} = weekNo(mon);
+  const wk = (typeof MATSEDEL !== "undefined" && MATSEDEL[`${y}-v${String(w).padStart(2, "0")}`]) || {};
+  document.getElementById("menu").innerHTML = DK.map((k, i) => {
+    const d = addDays(mon, i), rows = [].concat(wk[k] || []).map(x => String(x).trim()).filter(Boolean);
+    return `<article class="day${iso(d) === t ? " active" : ""}">
+      <div><div class="day-name">${WD[i]}</div><div class="day-date">${dLabel(d)}</div></div>
+      <div class="food"><div>${esc(rows[0] || "Ingen uppgift")}</div><div>${esc(rows.slice(1).join(" / "))}</div></div></article>`;
+  }).join("");
+  setNav("menu", `v. ${w}`, `${rangeTxt(mon)} ${y}`, menuOff);
+}
+
+// ---------- Prov & läxor (data i kalender.js) ----------
+const typeOf = t => { const s = String(t || "").toLowerCase();
+  return /^pro?v/.test(s) ? "prov" : /^l[äa]x|^hw$/.test(s) ? "laxa" : "annat"; };
+function events() {                                   // {"2026-10-28": [händelser]} för vald klass
+  const m = {}, rank = {prov: 0, laxa: 1, annat: 2}, re = /^\d{4}-\d{2}-\d{2}$/;
+  (typeof KALENDER !== "undefined" && Array.isArray(KALENDER) ? KALENDER : []).forEach(e => {
+    if (!e || !re.test(e.datum || "")) return;
+    if (e.klass && !String(e.klass).toUpperCase().includes(cls)) return;
+    const last = re.test(e.till || "") ? e.till : e.datum;
+    for (let d = utc(e.datum), n = 0; n < 62 && iso(d) <= last; n++, d = addDays(d, 1)) (m[iso(d)] ||= []).push(e);
+  });
+  for (const k in m) m[k].sort((a, b) => rank[typeOf(a.typ)] - rank[typeOf(b.typ)] || String(a.amne || "").localeCompare(String(b.amne || ""), "sv"));
+  return m;
+}
+const itemHtml = e => { const k = typeOf(e.typ), lab = k === "prov" ? "Prov" : k === "laxa" ? "Läxa" : e.typ ? cap(String(e.typ)) : "Annat";
+  return `<div class="it ${k}"><span class="tag">${esc(lab)}</span><span class="txt">${e.amne ? `<b>${esc(e.amne)}</b> ` : ""}${esc(e.text || "")}</span></div>`; };
+const itemsHtml = list => `<div class="items">${list.length ? list.map(itemHtml).join("") : '<div class="none">–</div>'}</div>`;
+const dayCard = (d, list, t, extra = "") => `<article class="day${iso(d) === t ? " active" : ""}${extra}">
+  <div><div class="day-name">${WD[(d.getUTCDay() + 6) % 7]}</div><div class="day-date">${dLabel(d)}</div></div>${itemsHtml(list)}</article>`;
+
+function weekView(ev, t) {
+  const mon = addDays(baseMonday(), calOff * 7), {y, w} = weekNo(mon);
+  let h = "";
+  for (let i = 0; i < 7; i++) { const d = addDays(mon, i), list = ev[iso(d)] || [];
+    if (i < 5 || list.length) h += dayCard(d, list, t); }          // lördag/söndag visas bara om något finns
+  return {html: `<div class="menu">${h}</div>`, big: `v. ${w}`, small: `${rangeTxt(mon)} ${y}`, off: calOff};
+}
+function monthView(ev, t) {
+  const [ty, tm] = t.split("-").map(Number), first = new Date(Date.UTC(ty, tm - 1 + monOff, 1));
+  const Y = first.getUTCFullYear(), M = first.getUTCMonth(), ym = iso(first).slice(0, 7);
+  const rows = Math.ceil(((first.getUTCDay() + 6) % 7 + new Date(Date.UTC(Y, M + 1, 0)).getUTCDate()) / 7), start = monOf(first);
+  if (!selDay || selDay.slice(0, 7) !== ym) selDay = t.slice(0, 7) === ym ? t : iso(first);
+  let g = '<div class="mgrid"><div class="mh">v.</div>' + "MTOTFLS".split("").map(x => `<div class="mh">${x}</div>`).join("");
+  for (let r = 0; r < rows; r++) {
+    const wd = addDays(start, r * 7);
+    g += `<button class="mw" data-w="${iso(wd)}" aria-label="Visa vecka ${weekNo(wd).w}">${weekNo(wd).w}</button>`;
+    for (let c = 0; c < 7; c++) {
+      const d = addDays(wd, c), k = iso(d), kinds = [...new Set((ev[k] || []).map(e => typeOf(e.typ)))];
+      g += `<button class="md${d.getUTCMonth() !== M ? " out" : ""}${k === t ? " today" : ""}${k === selDay ? " sel" : ""}" data-d="${k}" aria-label="${dLabel(d)}"><span>${d.getUTCDate()}</span><span class="dots">${kinds.map(x => `<i class="${x}"></i>`).join("")}</span></button>`;
+    }
+  }
+  g += "</div>" + dayCard(utc(selDay), ev[selDay] || [], t);
+  return {html: g, big: cap(MF[M]), small: String(Y), off: monOff};
+}
+function renderCal() {
+  const t = todayISO(), r = (calView === "week" ? weekView : monthView)(events(), t);
+  document.getElementById("cal").innerHTML = r.html;
+  setNav("cal", r.big, r.small, r.off);
+  document.querySelectorAll("#viewSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === calView));
+}
+const renderAll = () => { renderMenu(); renderCal(); };
+
+// ---------- Knappar ----------
+document.querySelectorAll(".nav").forEach(n => n.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return; touch();
+  const s = +b.dataset.s || 0;                                          // ‹ = -1, › = +1, "Idag" = 0
+  if (n.dataset.for === "menu") { menuOff = s ? menuOff + s : 0; renderMenu(); return; }
+  if (!s) { calOff = monOff = 0; selDay = null; } else if (calView === "week") calOff += s; else monOff += s;
+  renderCal();
+}));
+document.getElementById("viewSeg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return; touch();
+  calView = b.dataset.v; try { localStorage.setItem("calView", calView); } catch {}
+  renderCal();
+});
+document.getElementById("cal").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return; touch();
+  if (b.dataset.w) { calOff = Math.round((utc(b.dataset.w) - baseMonday()) / (7 * 864e5)); calView = "week"; }   // klick på veckonummer
+  else if (b.dataset.d) { const d = utc(b.dataset.d), [ty, tm] = todayISO().split("-").map(Number);
+    selDay = b.dataset.d; monOff = (d.getUTCFullYear() - ty) * 12 + d.getUTCMonth() - (tm - 1); }
+  renderCal();
+});
+// Skärmen hoppar själv tillbaka till nuvarande vecka/månad efter 2 minuter utan tryck.
+setInterval(() => {
+  if (performance.now() - touched < 120000) return;
+  if (menuOff || calOff || monOff || (calView === "month" && selDay && selDay !== todayISO())) {
+    menuOff = calOff = monOff = 0; selDay = null; renderAll();
+  }
+}, 5000);
+
+
+async function load() {                                  // hämtar bara schemat (lektioner) – inget om mat
+  try { const sc = normSched(await getJSON("schedule.json?t=" + Date.now())); if (sc) { schedules = sc; saveCache("schedule", sc); } } catch {}
+  tick();
+}
+// ---------- Schemabild ----------
+// Vanlig <img src> rakt av. Inga fetch/base64/SVG-omvägar som kan gå sönder i vissa webbläsare.
+// Är bilden en hel A4-sida (inte 1090 x 1064) klipps tabellen ut med CSS (klassen "crop").
+let schemaToken = 0;
+function loadSchema(c) {
+  const url = SCHEMA_IMG[c], root = document.documentElement, box = document.getElementById("schemaBox");
+  const light = document.getElementById("imgLight"), dark = document.getElementById("imgDark");
+  const err = document.getElementById("schemaErr"), token = ++schemaToken;
+  let retried = false;
+  box.classList.remove("err", "crop");
+  root.classList.remove("has-dark");
+  light.onload = () => {
+    if (token !== schemaToken) return;
+    const W = light.naturalWidth, H = light.naturalHeight;
+    box.classList.toggle("crop", !!H && Math.abs(W / H - 1090 / 1064) > 0.02);
+    box.classList.remove("err");
+  };
+  light.onerror = () => {
+    if (token !== schemaToken) return;
+    if (!retried) { retried = true; light.src = url + "?v=" + Date.now(); return; }   // ett nytt försök förbi cachen
+    err.textContent = "Kunde inte ladda schemabilden (" + url + "). Kontrollera att filen finns och heter exakt så.";
+    box.classList.add("err");
+  };
+  light.src = url;
+  // Mörk bild är valfri: den används bara om den faktiskt har laddats, annars inverteras den ljusa.
+  dark.onload = () => { if (token === schemaToken) root.classList.add("has-dark"); };
+  dark.onerror = () => {};
+  dark.src = `schema-morkt-${c}.png`;
+}
+// ---------- Klassval (9A / 9B) ----------
+function setClass(c, save = true) {
+  cls = c;
+  loadSchema(c);
+  document.getElementById("className").textContent = c;
+  document.getElementById("classSel").value = c;
+  document.title = `${c} - SchemavisarePRO`;
+  if (save) try { localStorage.setItem("klass", c); } catch {}
+  tick(); renderCal();
+}
+document.getElementById("classSel").onchange = e => setClass(e.target.value);
+setClass(cls, false);
+
+function loop() { tick(); setTimeout(loop, 1000 - now().getMilliseconds() + 5); }  // tickar på hel sekund
+loop();                       // allt ritas direkt, innan något nätverk svarat
+syncTime(); load();           // uppdateras i bakgrunden vid varje sidladdning
+document.addEventListener("visibilitychange", () => { if (!document.hidden) { syncTime(); load(); } });
+window.addEventListener("pageshow", e => { if (e.persisted) { syncTime(); load(); } });
+setInterval(() => { if (!synced || performance.now() - lastSync > 10 * 60 * 1000) syncTime(); }, 30 * 1000);
+setInterval(load, 10 * 60 * 1000);
+</script>
+</body>
+</html>
