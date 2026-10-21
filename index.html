@@ -102,10 +102,10 @@ html.narrow .menu{gap:calc(var(--vw)*2)}
 html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:calc(var(--vw)*3)}
 
 /* ---------- Prov & läxor, navigering ---------- */
-:root{--prov:#d32f2f;--glosor:#1967D2;--lov:#2E7D32;--studiedag:#43A047;--aktivitet:#ef6c00}
+:root{--prov:#d32f2f;--glosor:#1967D2;--lov:#2E7D32;--studiedag:#43A047;--aktivitet:var(--line)}
 .prov{--c:var(--prov)}.glosor{--c:var(--glosor)}.lov{--c:var(--lov)}.studiedag{--c:var(--studiedag)}.aktivitet{--c:var(--aktivitet)}
 .right{grid-column:2;grid-row:1}
-.mid{grid-column:1/-1;grid-row:2;padding-bottom:calc(var(--vh)*2)}
+.mid{grid-column:1/-1;grid-row:2;padding:calc(var(--u)*1.1);padding-bottom:calc(var(--vh)*2);border-radius:calc(var(--u)*1.2);background:var(--panel)}
 .head{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1);margin:0 0 calc(var(--u)*.9)}
 .head h1{margin:0}
 .seg{display:flex;border:2px solid var(--line);border-radius:calc(var(--u)*.9);overflow:hidden;background:var(--panel)}
@@ -120,8 +120,8 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .event-item:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
 .event-item:hover .txt{text-decoration:underline}
 .event-item:focus-visible{outline:2px solid var(--text);outline-offset:1px}
-.tag{background:var(--c,var(--event-color))}
-.dots i{background:var(--c,var(--event-color))}
+.tag{background:var(--event-color,var(--c))}
+.dots i{background:var(--event-color,var(--c))}
 .cal .day .day-name{line-height:1.2}
 .cal .day .day-date{margin-top:.2em}
 .more-events{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-weight:800;text-align:left;padding:.15em .25em;cursor:pointer;border-radius:.35em}
@@ -134,6 +134,8 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .event-dialog .event-meta{color:var(--muted);font-size:.92rem}
 .event-close{font:inherit;font-size:1.4rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);padding:.15rem .6rem;cursor:pointer}
 .tag{flex:none;background:var(--event-color,var(--c));color:#fff;font-weight:800;font-size:.8em;line-height:1.3;padding:.05em .55em;border-radius:.5em}
+.event-item.prov .tag{background:var(--prov)}.event-item.glosor .tag{background:var(--glosor)}.event-item.lov .tag{background:var(--lov)}.event-item.studiedag .tag{background:var(--studiedag)}
+.dots i.prov{background:var(--prov)}.dots i.glosor{background:var(--glosor)}.dots i.lov{background:var(--lov)}.dots i.studiedag{background:var(--studiedag)}
 .txt{min-width:0;overflow-wrap:anywhere}
 .none{opacity:.45}
 .nav{margin-top:auto;padding-top:calc(var(--u)*1);display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:calc(var(--u)*.6)}
@@ -143,7 +145,7 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .today-btn{font-size:clamp(11px,calc(var(--u)*1),22px)}
 .nlabel{text-align:center;line-height:1.15;font-weight:800;font-size:clamp(12px,calc(var(--u)*1.15),30px)}
 .nlabel small{display:block;font-weight:600;color:var(--muted);font-size:.8em}
-.mgrid{display:grid;grid-template-columns:auto repeat(7,minmax(0,1fr));gap:calc(var(--u)*.35)}
+.mgrid{display:grid;grid-template-columns:auto repeat(7,minmax(0,1fr));gap:calc(var(--u)*.35);min-height:0;align-content:start}
 .mgrid+.day{margin-top:calc(var(--u)*.15)}
 .mh{text-align:center;color:var(--muted);font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px)}
 .mw{font:inherit;font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px);border:0;background:none;color:var(--muted);cursor:pointer;padding:0 calc(var(--u)*.5);border-radius:calc(var(--u)*.5)}
@@ -155,11 +157,16 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .dots{display:flex;gap:2px;height:calc(var(--u)*.55)}
 .dots i{width:calc(var(--u)*.55);height:calc(var(--u)*.55);min-width:5px;min-height:5px;border-radius:50%;background:var(--event-color,var(--c))}
 html.wide .layout>.right,html.wide .layout>.mid{grid-column:auto;grid-row:auto}
-html.wide .mid{position:relative;height:80%;align-self:center;padding-bottom:0}
+html.wide .mid{position:relative;height:84%;align-self:center;padding:calc(var(--u)*1.1);padding-bottom:calc(var(--u)*1.1);overflow:hidden}
 html.wide .head{position:absolute;left:0;right:0;bottom:100%;margin:0 0 calc(var(--u)*.6)}
 html.wide .head h1{position:static;margin:0}
+html.wide .cal:has(.mgrid){display:flex;flex-direction:column;gap:calc(var(--u)*.25)}
+html.wide .cal:has(.mgrid) .mgrid{flex:0 0 auto;grid-template-rows:repeat(7,minmax(0,1fr))}
+html.wide .cal:has(.mgrid) .md{aspect-ratio:auto;height:clamp(24px,calc(var(--vh)*4.4),42px)}
+html.wide .cal:has(.mgrid) .mgrid+.day{flex:1 1 auto;min-height:0;margin-top:calc(var(--u)*.15)}
 html.narrow .layout>.right,html.narrow .layout>.mid{grid-column:auto;grid-row:auto}
 html.narrow .layout{row-gap:calc(var(--vw)*6)}
+html.narrow .mid{padding:calc(var(--vw)*2.5);overflow:hidden}
 html.narrow .cal .day{grid-template-columns:clamp(58px,calc(var(--vw)*19),84px) minmax(0,1fr);gap:calc(var(--vw)*2.5);padding:calc(var(--vw)*2.3) calc(var(--vw)*2.8);align-items:start}
 html.narrow .cal .menu{grid-template-rows:repeat(5,minmax(0,1fr));gap:calc(var(--vw)*2)}
 html.narrow .cal .items{gap:calc(var(--vw)*1.1)}
