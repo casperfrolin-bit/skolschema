@@ -70,11 +70,13 @@ var KALENDER = [];
     }).format(new Date(value));
   }
 
-  // Identifiera bara prov och glosor. Alla andra händelser blir vanliga aktiviteter.
+  // Identifiera prov, glosor, lov och studiedagar. Övriga händelser blir aktiviteter.
   function getType(title, calendar, description) {
     const text = `${title || ""} ${description || ""}`.toLowerCase();
     if (/\bprov\b|\btest\b|\bexamination\b/.test(text)) return "prov";
     if (/\bglosor\b|\bglosa\b/.test(text)) return "glosor";
+    if (/\bstudiedag(?:ar)?\b|\bstudiedagarna\b/.test(text)) return "studiedag";
+    if (/\blov\b|\bhöstlov\b|\bsportlov\b|\bpåsklov\b|\bsommarlov\b|\bjullov\b/.test(text)) return "lov";
     return "aktivitet";
   }
 
