@@ -1,3 +1,18 @@
 {
-  "events": []
+  "events": [
+    {
+      "id": "42ncss9g43u1d5q3tivpm8c0ss@google.com",
+      "title": "Läxa batonering idrott",
+      "start": "2025-09-24T10:00:00.000Z",
+      "end": "2025-09-24T11:00:00.000Z",
+      "allDay": false
+    },
+    {
+      "id": "3tg4r4dgqb055nidjap4e676cd@google.com",
+      "title": "Skriftligt prov orientering",
+      "start": "2025-10-15T11:00:00.000Z",
+      "end": "2025-10-15T12:00:00.000Z",
+      "allDay": false
+    }
+  ]
 }
