@@ -436,6 +436,7 @@ function renderCal() {
   document.querySelectorAll("#viewSeg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === calView));
 }
 const renderAll = () => { renderMenu(); renderCal(); };
+document.addEventListener("matsedelupdated", () => { renderMenu(); });
 
 // ---------- Knappar ----------
 document.querySelectorAll(".nav").forEach(n => n.addEventListener("click", e => {
