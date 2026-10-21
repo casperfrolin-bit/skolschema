@@ -1,4 +1,4 @@
-""""Hämtar Svensgårdsskolans offentliga matsedel och uppdaterar menu.json/index.html.
+"""Hämtar Svensgårdsskolans offentliga matsedel och uppdaterar menu.json/index.html.
 
 Försöker först Skolmatens publika RSS/JSON-flöde (ingen API-nyckel behövs).
 Om det inte fungerar kan den gamla officiella API-metoden användas via SKOLMATEN_TOKEN.
