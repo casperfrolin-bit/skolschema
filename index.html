@@ -103,7 +103,7 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 
 /* ---------- Prov & läxor, navigering ---------- */
 :root{--prov:#d32f2f;--glosor:#1967D2;--lov:#2E7D32;--studiedag:#43A047;--aktivitet:var(--line)}
-.prov{--c:var(--prov)}.glosor{--c:var(--glosor)}.lov{--c:var(--lov)}.studiedag{--c:var(--studiedag)}.aktivitet{--c:var(--aktivitet)}
+.prov{--c:var(--prov)}.glosor{--c:var(--glosor)}.lov{--c:var(--lov)}.studiedag{--c:var(--studiedag)}.aktivitet{--c:var(--event-color,var(--aktivitet))}
 .right{grid-column:2;grid-row:1}
 .mid{grid-column:1/-1;grid-row:2;padding:calc(var(--u)*1.1);padding-bottom:calc(var(--vh)*2);border-radius:calc(var(--u)*1.2);background:var(--panel)}
 .head{display:flex;align-items:center;justify-content:space-between;gap:calc(var(--u)*1);margin:0 0 calc(var(--u)*.9)}
@@ -114,17 +114,17 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .cal{flex:1 1 auto;min-height:0;overflow:hidden;padding:3px;margin:-3px}
 .cal .menu{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(5,minmax(0,1fr));height:100%;min-height:0;align-content:stretch;gap:calc(var(--u)*.55)}
 .cal .day{grid-template-columns:clamp(64px,calc(var(--u)*7),110px) minmax(0,1fr);align-items:start;min-width:0;min-height:0;overflow:hidden}
-.items{text-align:left;display:flex;flex-direction:column;gap:calc(var(--u)*.35);min-width:0}
+.items{text-align:left;display:flex;flex-direction:column;gap:calc(var(--u)*.2);min-width:0;min-height:0;overflow:hidden}
 .it{display:flex;gap:.6em;align-items:baseline;min-width:0}
-.event-item{appearance:none;-webkit-appearance:none;display:flex;width:100%;font:inherit;line-height:1.35;text-align:left;color:inherit;background:transparent;border:0;padding:.15em .2em;border-radius:.35em;cursor:pointer}
+.event-item{appearance:none;-webkit-appearance:none;display:flex;width:100%;min-width:0;font:inherit;font-size:clamp(10px,.88em,18px);line-height:1.15;text-align:left;color:inherit;background:transparent;border:0;padding:.15em .2em;border-radius:.35em;cursor:pointer}
 .event-item:hover{background:color-mix(in srgb,var(--text) 5%,transparent)}
 .event-item:hover .txt{text-decoration:underline}
 .event-item:focus-visible{outline:2px solid var(--text);outline-offset:1px}
-.tag{background:var(--event-color,var(--c))}
-.dots i{background:var(--event-color,var(--c))}
+.tag{background:var(--c,var(--event-color,var(--line)))}
+.dots i{background:var(--c,var(--event-color,var(--line)))}
 .cal .day .day-name{line-height:1.2}
 .cal .day .day-date{margin-top:.2em}
-.more-events{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-weight:800;text-align:left;padding:.15em .25em;cursor:pointer;border-radius:.35em}
+.more-events{appearance:none;border:0;background:none;color:var(--muted);font:inherit;font-size:clamp(10px,.85em,16px);line-height:1.1;font-weight:800;text-align:left;padding:0 .2em;min-width:0;overflow-wrap:anywhere;cursor:pointer;border-radius:.35em}
 .more-events:hover{text-decoration:underline;background:color-mix(in srgb,var(--text) 5%,transparent)}
 .event-dialog{width:min(92vw,560px);max-height:82vh;overflow:auto;border:1px solid var(--line);border-radius:18px;padding:1.2rem;background:var(--panel);color:var(--text);box-shadow:0 12px 50px #0004}
 .event-dialog::backdrop{background:#0008}
@@ -133,7 +133,7 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .event-dialog p{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.5}
 .event-dialog .event-meta{color:var(--muted);font-size:.92rem}
 .event-close{font:inherit;font-size:1.4rem;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--text);padding:.15rem .6rem;cursor:pointer}
-.tag{flex:none;background:var(--event-color,var(--c));color:#fff;font-weight:800;font-size:.8em;line-height:1.3;padding:.05em .55em;border-radius:.5em}
+.tag{flex:none;background:var(--c,var(--event-color,var(--line)));color:#fff;font-weight:800;font-size:.8em;line-height:1.3;padding:.05em .55em;border-radius:.5em}
 .event-item.prov .tag{background:var(--prov)}.event-item.glosor .tag{background:var(--glosor)}.event-item.lov .tag{background:var(--lov)}.event-item.studiedag .tag{background:var(--studiedag)}
 .dots i.prov{background:var(--prov)}.dots i.glosor{background:var(--glosor)}.dots i.lov{background:var(--lov)}.dots i.studiedag{background:var(--studiedag)}
 .txt{min-width:0;overflow-wrap:anywhere}
@@ -155,18 +155,22 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .md.today{background:var(--hl);color:var(--hl-text);border-color:var(--hl)}
 .md.sel{outline:3px solid var(--text);outline-offset:1px}
 .dots{display:flex;gap:2px;height:calc(var(--u)*.55)}
-.dots i{width:calc(var(--u)*.55);height:calc(var(--u)*.55);min-width:5px;min-height:5px;border-radius:50%;background:var(--event-color,var(--c))}
+.dots i{width:calc(var(--u)*.55);height:calc(var(--u)*.55);min-width:5px;min-height:5px;border-radius:50%;background:var(--c,var(--event-color,var(--line)))}
 html.wide .layout>.right,html.wide .layout>.mid{grid-column:auto;grid-row:auto}
-html.wide .mid{position:relative;height:84%;align-self:center;padding:calc(var(--u)*1.1);padding-bottom:calc(var(--u)*1.1);overflow:hidden}
+html.wide .mid{position:relative;height:90%;min-height:0;align-self:center;padding:calc(var(--u)*.65);padding-bottom:calc(var(--u)*.65);overflow:hidden}
 html.wide .head{position:absolute;left:0;right:0;bottom:100%;margin:0 0 calc(var(--u)*.6)}
 html.wide .head h1{position:static;margin:0}
 html.wide .cal:has(.mgrid){display:flex;flex-direction:column;gap:calc(var(--u)*.25)}
 html.wide .cal:has(.mgrid) .mgrid{flex:0 0 auto;grid-template-rows:repeat(7,minmax(0,1fr))}
-html.wide .cal:has(.mgrid) .md{aspect-ratio:auto;height:clamp(24px,calc(var(--vh)*4.4),42px)}
-html.wide .cal:has(.mgrid) .mgrid+.day{flex:1 1 auto;min-height:0;margin-top:calc(var(--u)*.15)}
+html.wide .cal:has(.mgrid) .md{aspect-ratio:auto;height:clamp(20px,calc(var(--vh)*3.8),36px);min-height:0}
+html.wide .cal:has(.mgrid) .mgrid+.day{flex:1 1 0;min-height:0;margin-top:calc(var(--u)*.15);overflow:hidden}
+html.wide .cal:has(.mgrid) .mgrid+.day .items{gap:1px}
+html.wide .cal:has(.mgrid) .mgrid+.day .event-item{font-size:clamp(10px,.78em,16px);line-height:1.08;padding:0 .12em}
+html.wide .cal:has(.mgrid) .mgrid+.day .tag{font-size:.72em;padding:0 .35em}
+html.wide .cal:has(.mgrid) .mgrid+.day .more-events{font-size:clamp(9px,.72em,14px);line-height:1;padding:0 .12em}
 html.narrow .layout>.right,html.narrow .layout>.mid{grid-column:auto;grid-row:auto}
 html.narrow .layout{row-gap:calc(var(--vw)*6)}
-html.narrow .mid{padding:calc(var(--vw)*2.5);overflow:hidden}
+html.narrow .mid{padding:calc(var(--vw)*2);overflow:hidden;min-height:0}
 html.narrow .cal .day{grid-template-columns:clamp(58px,calc(var(--vw)*19),84px) minmax(0,1fr);gap:calc(var(--vw)*2.5);padding:calc(var(--vw)*2.3) calc(var(--vw)*2.8);align-items:start}
 html.narrow .cal .menu{grid-template-rows:repeat(5,minmax(0,1fr));gap:calc(var(--vw)*2)}
 html.narrow .cal .items{gap:calc(var(--vw)*1.1)}
