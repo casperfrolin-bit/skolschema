@@ -174,7 +174,7 @@ def menu_from_public_feed(today):
                     for field in ("main", "alt"):
                         value = day.get(field)
                         if isinstance(value, str) and value.strip():
-                            rows.extend(part.strip() for part in re.split(r"\\s+ / \\s+", value) if part.strip())
+                            rows.extend(part.strip() for part in re.split(r"\s+ / \s+", value) if part.strip())
                     if rows:
                         found[date_text] = rows
             else:
