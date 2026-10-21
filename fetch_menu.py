@@ -150,8 +150,9 @@ def menu_from_public_feed(today):
     found = {}
     monday = today - timedelta(days=today.weekday())
     errors = []
-    # Behåll flera veckor så att användaren kan bläddra framåt och bakåt på webbsidan.
-    for offset in range(-2, 9):
+    # Hämta ungefär ett helt läsår bakåt/framåt så att veckoväljaren fungerar över fler månader.
+    # API:t returnerar bara dagar som faktiskt har publicerade maträtter.
+    for offset in range(-26, 31):
         target = monday + timedelta(days=7 * offset)
         iso = target.isocalendar()
         url = (
@@ -224,7 +225,7 @@ def main():
             pass
     for date_text, rows in found.items():
         days[date_text] = {"date": date_text, "main": rows[0], "alt": " / ".join(rows[1:])}
-    cutoff = (today - timedelta(days=21)).isoformat()
+    cutoff = (today - timedelta(days=180)).isoformat()
     days = {key: value for key, value in days.items() if key >= cutoff}
     OUT.write_text(
         json.dumps(
