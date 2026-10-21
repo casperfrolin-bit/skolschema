@@ -73,16 +73,16 @@ var KALENDER = [];
   // Tolkar ämnet från titel, beskrivning och kurskalender så att det inte bara står "Aktivitet".
   function getType(title, calendar, description) {
     const text = `${title || ""} ${description || ""} ${calendar || ""}`.toLowerCase();
-    if (/\\bprov\\b|\\btest\\b|\\bexamination\\b/.test(text)) return "prov";
-    if (/\\bläxa\\b|\\blaxa\\b|\\bhomework\\b|\\bglosor\\b|\\binlämning\\b|\\buppgift\\b/.test(text)) return "läxa";
+    if (/\bprov\b|\btest\b|\bexamination\b/.test(text)) return "prov";
+    if (/\bläxa\b|\blaxa\b|\bhomework\b|\bglosor\b|\binlämning\b|\buppgift\b/.test(text)) return "läxa";
     const subjects = [
-      [/\\b(mat(?:te)?matik|matte)\\b/, "Matematik"], [/\\b(svenska|sv)\\b/, "Svenska"],
-      [/\\b(engelska|english|eng)\\b/, "Engelska"], [/\\b(spanska|español)\\b/, "Spanska"],
-      [/\\b(tyska|deutsch)\\b/, "Tyska"], [/\\b(bild)\\b/, "Bild"], [/\\b(kemi)\\b/, "Kemi"],
-      [/\\b(fysik)\\b/, "Fysik"], [/\\b(biologi|bio)\\b/, "Biologi"], [/\\b(geografi|geo)\\b/, "Geografi"],
-      [/\\b(historia|hist)\\b/, "Historia"], [/\\b(samhällskunskap|samhäll|so)\\b/, "Samhällskunskap"],
-      [/\\b(idrott)\\b/, "Idrott"], [/\\b(musik)\\b/, "Musik"], [/\\b(slöjd|slojd)\\b/, "Slöjd"],
-      [/\\b(hemkunskap|hkk)\\b/, "Hem- och konsumentkunskap"]
+      [/\b(mat(?:te)?matik|matte)\b/, "Matematik"], [/\b(svenska|sv)\b/, "Svenska"],
+      [/\b(engelska|english|eng)\b/, "Engelska"], [/\b(spanska|español)\b/, "Spanska"],
+      [/\b(tyska|deutsch)\b/, "Tyska"], [/\b(bild)\b/, "Bild"], [/\b(kemi)\b/, "Kemi"],
+      [/\b(fysik)\b/, "Fysik"], [/\b(biologi|bio)\b/, "Biologi"], [/\b(geografi|geo)\b/, "Geografi"],
+      [/\b(historia|hist)\b/, "Historia"], [/\b(samhällskunskap|samhäll|so)\b/, "Samhällskunskap"],
+      [/\b(idrott)\b/, "Idrott"], [/\b(musik)\b/, "Musik"], [/\b(slöjd|slojd)\b/, "Slöjd"],
+      [/\b(hemkunskap|hkk)\b/, "Hem- och konsumentkunskap"]
     ];
     const found = subjects.find(([pattern]) => pattern.test(text));
     if (found) return found[1];
