@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-23T07:20:13.786Z",
+  "updated": "2026-10-23T07:25:07.972Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -7676,6 +7676,17 @@
       "description": "",
       "start": "2026-11-05T10:10:00.000Z",
       "end": "2026-11-05T11:20:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::35h8va2adk0jhfij3l2bi1geoi@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Sv 9b Litteraturhistoria",
+      "description": "Idag på lektionen skriver du din del av grupparbetet i Trelson. Du kommer att få dina förberedda stödord utskrivna av mig som stöd för den löpande texten du skriver i dag.",
+      "start": "2026-11-06T07:30:00.000Z",
+      "end": "2026-11-06T08:30:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
     },
