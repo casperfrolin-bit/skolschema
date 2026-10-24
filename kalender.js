@@ -204,13 +204,29 @@ var KALENDER = [];
         throw new Error("calendar.json saknar en events-lista.");
       }
 
-      // Visa kurs-/Classroom-kalendrar men dölj personlig kalender och svenska helgdagar.
+      // Klassernas kalenderurval.
+      // 9A ska bara visa sin egen kalender samt Tyska-Deutsch 9.
+      // 9B ska visa alla skol-/ämneskalendrar utom 9A-kalendern.
+      // Personliga kalendrar filtreras bort via kalender-ID (Classroom-kalendrar
+      // använder @group.calendar.google.com).
+      const CLASS_9A_CALENDAR = "9A Svensgårdsskolan 26/27";
+      const GERMAN_CALENDAR = "Tyska-Deutsch 9";
+      const selectedClass = typeof cls !== "undefined" ? String(cls).toUpperCase() : "9B";
+
       const classroomEvents = rawEvents.filter(event => {
         const name = String(event && event.calendar || "").trim();
-        if (!name) return true;
-        if (name.includes("@")) return false;
+        const calendarId = String(event && event.calendarId || "").trim();
+
+        if (!name || name.includes("@")) return false;
         if (/^helgdagar i sverige$/i.test(name)) return false;
-        return true;
+        if (calendarId && !/@group\.calendar\.google\.com$/i.test(calendarId) &&
+            !/@group\.v\.calendar\.google\.com$/i.test(calendarId)) return false;
+
+        if (selectedClass === "9A") {
+          return name === CLASS_9A_CALENDAR || name === GERMAN_CALENDAR;
+        }
+
+        return name !== CLASS_9A_CALENDAR;
       });
 
       const converted = classroomEvents
