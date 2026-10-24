@@ -154,19 +154,19 @@ html.narrow .day{padding:calc(var(--vw)*2.5) calc(var(--vw)*3.5);border-radius:c
 .mh{text-align:center;color:var(--muted);font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px)}
 .mw{font:inherit;font-weight:700;font-size:clamp(10px,calc(var(--u)*.85),22px);border:0;background:none;color:var(--muted);cursor:pointer;padding:0 calc(var(--u)*.5);border-radius:calc(var(--u)*.5)}
 .mw:hover{color:var(--text)}
-.md{font:inherit;font-weight:700;font-size:clamp(11px,calc(var(--u)*1),26px);aspect-ratio:1/.9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:calc(var(--u)*.2);padding:0;border:2px solid var(--line);border-radius:calc(var(--u)*.7);background:var(--panel);color:var(--text);cursor:pointer}
+.md{font:inherit;font-weight:700;font-size:clamp(11px,calc(var(--u)*1),26px);aspect-ratio:1/.9;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:2px 0;border:2px solid var(--line);border-radius:calc(var(--u)*.7);background:var(--panel);color:var(--text);cursor:pointer}
 .md.out{opacity:.4}
 .md.today{background:var(--hl);color:var(--hl-text);border-color:var(--hl)}
 .md.sel{outline:3px solid var(--text);outline-offset:1px}
-.dots{display:flex;flex:none;align-items:center;justify-content:center;gap:2px;width:100%;height:auto;min-height:5px;overflow:visible}
-.dots i{display:block;flex:0 0 max(5px,calc(var(--u)*.55));width:max(5px,calc(var(--u)*.55));height:max(5px,calc(var(--u)*.55));min-width:5px;min-height:5px;border-radius:50%;background:var(--c,var(--event-color,var(--line)))}
+.dots{display:flex;flex:none;align-items:center;justify-content:center;gap:2px;width:100%;height:6px;min-height:6px;overflow:hidden;flex-wrap:nowrap}
+.dots i{display:block;flex:0 0 5px;width:5px;height:5px;min-width:5px;min-height:5px;border-radius:50%;background:var(--c,var(--event-color,var(--line)))}
 html.wide .layout>.right,html.wide .layout>.mid{grid-column:auto;grid-row:auto}
 html.wide .mid{position:relative;height:80%;min-height:0;align-self:center;padding:calc(var(--u)*.85);padding-bottom:calc(var(--u)*.85);overflow:hidden}
 html.wide .head{position:relative;left:auto;right:auto;bottom:auto;margin:0 0 calc(var(--u)*.9);flex-shrink:0}
 html.wide .head h1{position:static;margin:0}
 html.wide .cal:has(.mgrid){display:flex;flex-direction:column;gap:calc(var(--u)*.25)}
 html.wide .cal:has(.mgrid) .mgrid{flex:0 0 auto;grid-template-rows:repeat(7,minmax(0,1fr))}
-html.wide .cal:has(.mgrid) .md{aspect-ratio:auto;height:clamp(20px,calc(var(--vh)*3.8),36px);min-height:0}
+html.wide .cal:has(.mgrid) .md{aspect-ratio:auto;height:clamp(30px,calc(var(--vh)*4.4),44px);min-height:0;gap:2px;padding:2px 0}
 html.wide .cal:has(.mgrid) .mgrid+.day{flex:1 1 0;min-height:0;margin-top:calc(var(--u)*.15);overflow:hidden}
 html.wide .cal:has(.mgrid) .mgrid+.day .items{gap:1px}
 html.wide .cal:has(.mgrid) .mgrid+.day .event-item{font-size:clamp(10px,.78em,16px);line-height:1.08;padding:0 .12em}
@@ -332,7 +332,7 @@ html.narrow .footer-mail{font-size:clamp(13px,calc(var(--vw)*3.3),18px)}
   <button id="themeBtn" class="theme-btn" aria-label="Byt ljust/mörkt läge"></button>
 </main>
 <script id="seed-schedule" type="application/json">{"9A": [], "9B": [{"day": "måndag", "start": "08:20", "end": "08:40", "subject": "Kompassen", "room": "Sal 1"}, {"day": "måndag", "start": "08:40", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "måndag", "start": "10:00", "end": "11:00", "subject": "Språkval", "room": "Sal 5 / Sal 1 / Sal 2"}, {"day": "måndag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "måndag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "måndag", "start": "12:50", "end": "13:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "måndag", "start": "14:00", "end": "15:00", "subject": "Idrott", "room": "Sporthall"}, {"day": "tisdag", "start": "08:20", "end": "09:40", "subject": "NO / Te-labb", "room": "NO 2 / NO 1"}, {"day": "tisdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 5"}, {"day": "tisdag", "start": "11:20", "end": "12:00", "subject": "Engelska", "room": "Sal 1"}, {"day": "tisdag", "start": "12:00", "end": "12:20", "subject": "Lunch", "room": ""}, {"day": "tisdag", "start": "12:30", "end": "13:40", "subject": "Kemi", "room": "NO 1"}, {"day": "tisdag", "start": "14:00", "end": "15:30", "subject": "HK / Slöjd", "room": "Gläntan"}, {"day": "onsdag", "start": "08:20", "end": "09:40", "subject": "Engelska", "room": "Sal 1"}, {"day": "onsdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 3"}, {"day": "onsdag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "onsdag", "start": "12:30", "end": "12:50", "subject": "Lunch", "room": ""}, {"day": "onsdag", "start": "13:00", "end": "14:00", "subject": "Bild", "room": "Bildsal"}, {"day": "torsdag", "start": "08:15", "end": "09:45", "subject": "HK / Slöjd / Musik", "room": "Gläntan / Musiksal"}, {"day": "torsdag", "start": "10:00", "end": "11:00", "subject": "Geografi", "room": "Sal 6"}, {"day": "torsdag", "start": "11:10", "end": "12:10", "subject": "Språkval", "room": "Sal 2 / Sal 5 / Sal 1"}, {"day": "torsdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "torsdag", "start": "12:50", "end": "14:00", "subject": "Fysik", "room": "NO 2"}, {"day": "torsdag", "start": "14:10", "end": "15:30", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "08:30", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "10:00", "end": "11:10", "subject": "Matematik", "room": "Sal 3"}, {"day": "fredag", "start": "11:20", "end": "12:10", "subject": "Språkval", "room": "Sal 1 / Sal 2 / Sal 5"}, {"day": "fredag", "start": "12:10", "end": "12:30", "subject": "Lunch", "room": ""}, {"day": "fredag", "start": "12:50", "end": "14:00", "subject": "Idrott", "room": "Tofta 2"}]}</script>
-<script src="kalender.js?v=20261024-5"></script>
+<script src="kalender.js?v=20261024-6"></script>
 <script>
 const TZ = "Europe/Stockholm";
 const DAYS = ["måndag","tisdag","onsdag","torsdag","fredag"];
