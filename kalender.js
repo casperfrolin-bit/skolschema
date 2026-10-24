@@ -27,6 +27,10 @@ var KALENDER = [];
   const TIME_ZONE = "Europe/Stockholm";
   let isLoading = false;
   let lastJson = "";
+  let rawEventsCache = null;
+
+  const CLASS_9A_CALENDAR = "9A Svensgårdsskolan 26/27";
+  const GERMAN_CALENDAR = "Tyska-Deutsch 9";
 
   // Hämtar ett datum i svensk tidszon i formatet ÅÅÅÅ-MM-DD.
   function stockholmDate(value) {
@@ -175,6 +179,52 @@ var KALENDER = [];
     }, { once: true });
   }
 
+  // Filtrera om direkt när klassväljaren ändras, utan att hämta sidan igen.
+  function applyCalendarForSelectedClass() {
+    if (!Array.isArray(rawEventsCache)) return;
+
+    const selectedClass = String(
+      document.getElementById("classSel")?.value || "9B"
+    ).toUpperCase();
+
+    const classroomEvents = rawEventsCache.filter(event => {
+      const name = String(event && event.calendar || "").trim();
+      const calendarId = String(event && event.calendarId || "").trim();
+
+      if (!name || name.includes("@")) return false;
+      if (/^helgdagar i sverige$/i.test(name)) return false;
+      if (calendarId && !/@group\\.calendar\\.google\\.com$/i.test(calendarId) &&
+          !/@group\\.v\\.calendar\\.google\\.com$/i.test(calendarId)) return false;
+
+      if (selectedClass === "9A") {
+        return name === CLASS_9A_CALENDAR || name === GERMAN_CALENDAR;
+      }
+
+      return name !== CLASS_9A_CALENDAR;
+    });
+
+    const converted = classroomEvents
+      .map(convertEvent)
+      .filter(Boolean)
+      .sort((a, b) => {
+        const dateCompare = a.datum.localeCompare(b.datum);
+        if (dateCompare !== 0) return dateCompare;
+        return a.text.localeCompare(b.text, "sv");
+      });
+
+    const json = JSON.stringify(converted);
+    if (json !== lastJson) {
+      lastJson = json;
+      KALENDER = converted;
+      refreshCalendar();
+    }
+
+    console.info(`Skolkalendern uppdaterad för ${selectedClass}: ${KALENDER.length} händelser.`);
+  }
+
+  // Kan anropas från klassväljaren i index.html.
+  window.refreshSchoolCalendarForClass = applyCalendarForSelectedClass;
+
   async function loadCalendar() {
     if (isLoading) {
       return;
@@ -204,48 +254,9 @@ var KALENDER = [];
         throw new Error("calendar.json saknar en events-lista.");
       }
 
-      // Klassernas kalenderurval.
-      // 9A ska bara visa sin egen kalender samt Tyska-Deutsch 9.
-      // 9B ska visa alla skol-/ämneskalendrar utom 9A-kalendern.
-      // Personliga kalendrar filtreras bort via kalender-ID (Classroom-kalendrar
-      // använder @group.calendar.google.com).
-      const CLASS_9A_CALENDAR = "9A Svensgårdsskolan 26/27";
-      const GERMAN_CALENDAR = "Tyska-Deutsch 9";
-      const selectedClass = typeof cls !== "undefined" ? String(cls).toUpperCase() : "9B";
+      rawEventsCache = rawEvents;
+      applyCalendarForSelectedClass();
 
-      const classroomEvents = rawEvents.filter(event => {
-        const name = String(event && event.calendar || "").trim();
-        const calendarId = String(event && event.calendarId || "").trim();
-
-        if (!name || name.includes("@")) return false;
-        if (/^helgdagar i sverige$/i.test(name)) return false;
-        if (calendarId && !/@group\.calendar\.google\.com$/i.test(calendarId) &&
-            !/@group\.v\.calendar\.google\.com$/i.test(calendarId)) return false;
-
-        if (selectedClass === "9A") {
-          return name === CLASS_9A_CALENDAR || name === GERMAN_CALENDAR;
-        }
-
-        return name !== CLASS_9A_CALENDAR;
-      });
-
-      const converted = classroomEvents
-        .map(convertEvent)
-        .filter(Boolean)
-        .sort((a, b) => {
-          const dateCompare = a.datum.localeCompare(b.datum);
-          if (dateCompare !== 0) return dateCompare;
-          return a.text.localeCompare(b.text, "sv");
-        });
-
-      // Undvik att rita om kalendern om datan är oförändrad.
-      const json = JSON.stringify(converted);
-
-      if (json !== lastJson) {
-        lastJson = json;
-        KALENDER = converted;
-        refreshCalendar();
-      }
 
       console.info(
         `Skolkalendern är uppdaterad: ${KALENDER.length} händelser.`
