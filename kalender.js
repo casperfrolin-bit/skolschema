@@ -181,7 +181,11 @@ var KALENDER = [];
 
   // Filtrera om direkt när klassväljaren ändras, utan att hämta sidan igen.
   function applyCalendarForSelectedClass() {
-    if (!Array.isArray(rawEventsCache)) return;
+    // Om data inte hunnit hämtas ännu, starta/fortsätt hämtningen.
+    if (!Array.isArray(rawEventsCache)) {
+      loadCalendar();
+      return;
+    }
 
     const selectedClass = String(
       document.getElementById("classSel")?.value || "9B"
@@ -213,11 +217,10 @@ var KALENDER = [];
       });
 
     const json = JSON.stringify(converted);
-    if (json !== lastJson) {
-      lastJson = json;
-      KALENDER = converted;
-      refreshCalendar();
-    }
+    lastJson = json;
+    // Byt alltid den aktiva listan och rita om vid klassbyte.
+    KALENDER = converted;
+    refreshCalendar();
 
     console.info(`Skolkalendern uppdaterad för ${selectedClass}: ${KALENDER.length} händelser.`);
   }
