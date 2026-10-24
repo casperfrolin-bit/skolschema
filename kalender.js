@@ -197,8 +197,8 @@ var KALENDER = [];
 
       if (!name || name.includes("@")) return false;
       if (/^helgdagar i sverige$/i.test(name)) return false;
-      if (calendarId && !/@group\\.calendar\\.google\\.com$/i.test(calendarId) &&
-          !/@group\\.v\\.calendar\\.google\\.com$/i.test(calendarId)) return false;
+      if (calendarId && !/@group\.calendar\.google\.com$/i.test(calendarId) &&
+          !/@group\.v\.calendar\.google\.com$/i.test(calendarId)) return false;
 
       if (selectedClass === "9A") {
         return name === CLASS_9A_CALENDAR || name === GERMAN_CALENDAR;
