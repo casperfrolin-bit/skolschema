@@ -215,6 +215,40 @@ html.narrow .footer-title{font-size:clamp(15px,calc(var(--vw)*4),22px)}
 html.narrow .footer-note{font-size:clamp(12px,calc(var(--vw)*3),16px)}
 html.narrow .footer-mail{font-size:clamp(13px,calc(var(--vw)*3.3),18px)}
 
+
+/* ---------- Responsiv kalender: håll text och rutor inom kalenderpanelen ---------- */
+.mid,.head,.cal,.cal .menu,.cal .day,.cal .items,.cal .mgrid,
+.cal .event-item,.cal .txt,.cal .more-events { min-width:0; max-width:100%; }
+.mid { box-sizing:border-box; }
+.cal { width:100%; }
+.cal .day { box-sizing:border-box; }
+.cal .day > div:first-child { min-width:0; }
+.cal .day .day-name,
+.cal .day .day-date,
+.cal .txt,
+.cal .more-events { overflow-wrap:anywhere; word-break:normal; hyphens:auto; }
+.cal .items { text-align:left; }
+.cal .event-item { align-items:flex-start; flex-wrap:wrap; gap:.25em .45em; white-space:normal; overflow-wrap:anywhere; }
+.cal .event-item .tag { flex:0 0 auto; max-width:100%; white-space:normal; overflow-wrap:anywhere; }
+.cal .event-item .txt { flex:1 1 5em; }
+.cal .day .day-name { font-size:clamp(10px, calc(var(--u)*.95), 22px); }
+.cal .day .day-date { font-size:clamp(8px, calc(var(--u)*.68), 15px); }
+.cal .event-item { font-size:clamp(9px, calc(var(--u)*.78), 16px); line-height:1.18; }
+.cal .more-events { font-size:clamp(9px, calc(var(--u)*.72), 14px); }
+.cal .mgrid { width:100%; grid-template-columns:minmax(18px,auto) repeat(7,minmax(0,1fr)); }
+.cal .md,.cal .mw,.cal .mh { min-width:0; overflow:hidden; }
+.cal .dots { max-width:100%; min-width:0; flex-wrap:wrap; overflow:hidden; }
+@media (max-width: 520px) {
+  html.narrow .mid { width:100%; }
+  html.narrow .cal .day { grid-template-columns:minmax(48px, 22%) minmax(0,1fr); gap:8px; }
+  html.narrow .cal .event-item { font-size:clamp(10px, 2.8vw, 14px); line-height:1.2; }
+  html.narrow .cal .day .day-name { font-size:clamp(11px, 3vw, 15px); }
+  html.narrow .cal .day .day-date { font-size:clamp(9px, 2.4vw, 12px); }
+  html.narrow .cal .tag { font-size:.78em; }
+  html.narrow .nav { grid-template-columns:auto minmax(0,1fr) auto auto; gap:4px; }
+  html.narrow .nlabel { overflow-wrap:anywhere; }
+}
+
 </style>
 </head>
 <body>
@@ -298,7 +332,7 @@ html.narrow .footer-mail{font-size:clamp(13px,calc(var(--vw)*3.3),18px)}
   <button id="themeBtn" class="theme-btn" aria-label="Byt ljust/mörkt läge"></button>
 </main>
 <script id="seed-schedule" type="application/json">{"9A": [], "9B": [{"day": "måndag", "start": "08:20", "end": "08:40", "subject": "Kompassen", "room": "Sal 1"}, {"day": "måndag", "start": "08:40", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "måndag", "start": "10:00", "end": "11:00", "subject": "Språkval", "room": "Sal 5 / Sal 1 / Sal 2"}, {"day": "måndag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "måndag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "måndag", "start": "12:50", "end": "13:40", "subject": "Matematik", "room": "Sal 3"}, {"day": "måndag", "start": "14:00", "end": "15:00", "subject": "Idrott", "room": "Sporthall"}, {"day": "tisdag", "start": "08:20", "end": "09:40", "subject": "NO / Te-labb", "room": "NO 2 / NO 1"}, {"day": "tisdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 5"}, {"day": "tisdag", "start": "11:20", "end": "12:00", "subject": "Engelska", "room": "Sal 1"}, {"day": "tisdag", "start": "12:00", "end": "12:20", "subject": "Lunch", "room": ""}, {"day": "tisdag", "start": "12:30", "end": "13:40", "subject": "Kemi", "room": "NO 1"}, {"day": "tisdag", "start": "14:00", "end": "15:30", "subject": "HK / Slöjd", "room": "Gläntan"}, {"day": "onsdag", "start": "08:20", "end": "09:40", "subject": "Engelska", "room": "Sal 1"}, {"day": "onsdag", "start": "10:00", "end": "11:00", "subject": "Matematik", "room": "Sal 3"}, {"day": "onsdag", "start": "11:10", "end": "12:20", "subject": "Geografi", "room": "Sal 6"}, {"day": "onsdag", "start": "12:30", "end": "12:50", "subject": "Lunch", "room": ""}, {"day": "onsdag", "start": "13:00", "end": "14:00", "subject": "Bild", "room": "Bildsal"}, {"day": "torsdag", "start": "08:15", "end": "09:45", "subject": "HK / Slöjd / Musik", "room": "Gläntan / Musiksal"}, {"day": "torsdag", "start": "10:00", "end": "11:00", "subject": "Geografi", "room": "Sal 6"}, {"day": "torsdag", "start": "11:10", "end": "12:10", "subject": "Språkval", "room": "Sal 2 / Sal 5 / Sal 1"}, {"day": "torsdag", "start": "12:20", "end": "12:40", "subject": "Lunch", "room": ""}, {"day": "torsdag", "start": "12:50", "end": "14:00", "subject": "Fysik", "room": "NO 2"}, {"day": "torsdag", "start": "14:10", "end": "15:30", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "08:30", "end": "09:40", "subject": "Svenska", "room": "Sal 1"}, {"day": "fredag", "start": "10:00", "end": "11:10", "subject": "Matematik", "room": "Sal 3"}, {"day": "fredag", "start": "11:20", "end": "12:10", "subject": "Språkval", "room": "Sal 1 / Sal 2 / Sal 5"}, {"day": "fredag", "start": "12:10", "end": "12:30", "subject": "Lunch", "room": ""}, {"day": "fredag", "start": "12:50", "end": "14:00", "subject": "Idrott", "room": "Tofta 2"}]}</script>
-<script src="kalender.js?v=20261024-3"></script>
+<script src="kalender.js?v=20261024-4"></script>
 <script>
 const TZ = "Europe/Stockholm";
 const DAYS = ["måndag","tisdag","onsdag","torsdag","fredag"];
