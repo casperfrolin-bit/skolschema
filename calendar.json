@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-31T11:08:20.961Z",
+  "updated": "2026-10-31T11:13:08.368Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13893,6 +13893,28 @@
       "end": "2026-12-18T08:40:00.000Z",
       "allDay": false,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::465qp7e190q9jr8blff60pjfqo@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Julavslutning idag",
+      "description": "",
+      "start": "2026-12-21T23:00:00.000Z",
+      "end": "2026-12-22T23:00:00.000Z",
+      "allDay": true,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::716qblr0lk05343ueac9te5o08@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Skolstart",
+      "description": "",
+      "start": "2027-01-10T23:00:00.000Z",
+      "end": "2027-01-11T23:00:00.000Z",
+      "allDay": true,
+      "calendarColor": "#FF7537"
     }
   ]
 }
