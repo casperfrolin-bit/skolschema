@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-31T11:03:07.318Z",
+  "updated": "2026-10-31T11:08:20.961Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13761,6 +13761,17 @@
       "end": "2026-11-16T23:00:00.000Z",
       "allDay": true,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::3o9e0f4kvsbh4aqo769r31f8il@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "9b. Nationellt prov i engelska denna vecka",
+      "description": "Du blir tilldelad en tid då du  och en klasskamrat kommer till mig och gör ditt muntliga nationella prov i engelska.",
+      "start": "2026-11-16T23:00:00.000Z",
+      "end": "2026-11-20T23:00:00.000Z",
+      "allDay": true,
+      "calendarColor": "#FF7537"
     },
     {
       "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::740g0gd1m0910btfnh1hceqc4l@google.com",
