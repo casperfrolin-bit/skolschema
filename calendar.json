@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-03T14:23:15.707Z",
+  "updated": "2026-11-03T14:28:51.084Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13737,6 +13737,17 @@
       "description": "",
       "start": "2026-11-10T13:30:00.000Z",
       "end": "2026-11-10T14:30:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::006gb07fgslj1jf1gfeego10hc@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Prov geografi",
+      "description": "Du kommer att hämta information ur en tabell som handlar om stadsdelarna i Helsingborg. Frågorna kommer att kopplas till hållbar utveckling.",
+      "start": "2026-11-11T10:10:00.000Z",
+      "end": "2026-11-11T11:10:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
     },
