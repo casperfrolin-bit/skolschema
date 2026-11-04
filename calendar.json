@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04T09:24:13.272Z",
+  "updated": "2026-11-04T09:28:06.513Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13715,6 +13715,17 @@
       "description": "Idag på lektionen skriver du din del av grupparbetet i Trelson. Du kommer att få dina förberedda stödord utskrivna av mig som stöd för den löpande texten du skriver i dag.",
       "start": "2026-11-06T07:30:00.000Z",
       "end": "2026-11-06T08:30:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::7fjhqrtcu7ikhd505gs7u4ut6n@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Eng 9b Time for thoughts",
+      "description": "Idag ska du komma med ett förslag på ett land i världen där engelska är ett officiellt språk och som du vill använda till din fiktiva roadtrip. \n\nOm ni blir fler som vill skriva om samma land kommer du att behöva ha ett (eller flera) alternativ så att vi får en god spridning och variation.",
+      "start": "2026-11-10T10:30:00.000Z",
+      "end": "2026-11-10T11:30:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
     },
