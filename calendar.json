@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04T14:48:15.330Z",
+  "updated": "2026-11-04T14:53:07.880Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13708,17 +13708,6 @@
       "calendarColor": "#9A9CFF"
     },
     {
-      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::35h8va2adk0jhfij3l2bi1geoi@google.com",
-      "calendar": "9B Svensgårdsskolan 26/27",
-      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
-      "title": "Sv 9b Litteraturhistoria",
-      "description": "Idag på lektionen skriver du din del av grupparbetet i Trelson. Du kommer att få dina förberedda stödord utskrivna av mig som stöd för den löpande texten du skriver i dag.",
-      "start": "2026-11-06T07:30:00.000Z",
-      "end": "2026-11-06T08:30:00.000Z",
-      "allDay": false,
-      "calendarColor": "#FF7537"
-    },
-    {
       "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::7fjhqrtcu7ikhd505gs7u4ut6n@google.com",
       "calendar": "9B Svensgårdsskolan 26/27",
       "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
@@ -13862,6 +13851,17 @@
       "calendarColor": "#9A9CFF"
     },
     {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::35h8va2adk0jhfij3l2bi1geoi@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Sv 9b Litteraturhistoria",
+      "description": "Idag på lektionen skriver du din del av grupparbetet i Trelson. Du kommer att få dina förberedda stödord utskrivna av mig som stöd för den löpande texten du skriver i dag.",
+      "start": "2026-11-30T07:30:00.000Z",
+      "end": "2026-11-30T08:30:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
       "id": "c_classroomeae5bc8f@group.calendar.google.com::4p9r9pche0uencukqj61igacu5@google.com",
       "calendar": "Tyska-Deutsch 9",
       "calendarId": "c_classroomeae5bc8f@group.calendar.google.com",
@@ -13871,6 +13871,17 @@
       "end": "2026-11-30T10:00:00.000Z",
       "allDay": false,
       "calendarColor": "#1967D2"
+    },
+    {
+      "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::3bie1k37inn4kn7ivl488g66vm@google.com",
+      "calendar": "9A Svensgårdsskolan 26/27",
+      "calendarId": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com",
+      "title": "Sv 9a Litteraturhistoria",
+      "description": "Idag på lektionen skriver du din del av grupparbetet i Trelson. Du kommer att få dina förberedda stödord utskrivna av mig som stöd för den löpande texten du skriver i dag.",
+      "start": "2026-12-01T07:20:00.000Z",
+      "end": "2026-12-01T08:20:00.000Z",
+      "allDay": false,
+      "calendarColor": "#9A9CFF"
     },
     {
       "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::1h2mlqhsf4r3vsd6h318jhaurk@google.com",
@@ -13891,6 +13902,28 @@
       "description": "",
       "start": "2026-12-02T09:00:00.000Z",
       "end": "2026-12-02T10:00:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::2i5psg50ie22h56k1dvc2ur6j7@google.com",
+      "calendar": "9A Svensgårdsskolan 26/27",
+      "calendarId": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com",
+      "title": "Sv 9a Inlämning litteraturhistoria",
+      "description": "DEADLINE FAKTATEXT (GRUPP, INDIVIDUELL DEL OM FÖRFATTAREN, KÄLLHÄNVISNINGAR OCH KÄLLFÖRTECKNING)",
+      "start": "2026-12-03T11:50:00.000Z",
+      "end": "2026-12-03T12:50:00.000Z",
+      "allDay": false,
+      "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::03pofckjvqjauift5vjcvd4ipf@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Sv 9b Inlämning litteraturhistoria",
+      "description": "DEADLINE FAKTATEXT (GRUPP, INDIVIDUELL DEL OM FÖRFATTAREN, KÄLLHÄNVISNINGAR OCH KÄLLFÖRTECKNING)",
+      "start": "2026-12-04T07:30:00.000Z",
+      "end": "2026-12-04T08:30:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
     },
