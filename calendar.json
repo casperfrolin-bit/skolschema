@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04T14:53:07.880Z",
+  "updated": "2026-11-04T14:58:09.175Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13950,6 +13950,28 @@
       "calendarColor": "#9A9CFF"
     },
     {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::6b84rm8dlghf5spot5le6uuqhq@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Sv9b Muntlig presentation litterär epok",
+      "description": "",
+      "start": "2026-12-14T07:20:00.000Z",
+      "end": "2026-12-14T08:20:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::1qdnrdqjcdfr5l1ogvdths9rfs@google.com",
+      "calendar": "9A Svensgårdsskolan 26/27",
+      "calendarId": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com",
+      "title": "Sv9a Muntlig presentation litterär epok",
+      "description": "",
+      "start": "2026-12-15T07:20:00.000Z",
+      "end": "2026-12-15T08:20:00.000Z",
+      "allDay": false,
+      "calendarColor": "#9A9CFF"
+    },
+    {
       "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::29dofddbehdo0qlfpkghc7c3fq@google.com",
       "calendar": "9B Svensgårdsskolan 26/27",
       "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
@@ -13957,6 +13979,28 @@
       "description": "",
       "start": "2026-12-17T09:00:00.000Z",
       "end": "2026-12-17T10:00:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::51udckptdhmn08uofhe0rd2b44@google.com",
+      "calendar": "9A Svensgårdsskolan 26/27",
+      "calendarId": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com",
+      "title": "Sv9a Muntlig presentation litterär epok",
+      "description": "",
+      "start": "2026-12-17T11:50:00.000Z",
+      "end": "2026-12-17T12:50:00.000Z",
+      "allDay": false,
+      "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::7bptgos4st7p2620lne534ejjk@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Sv9b Muntlig presentation litterär epok",
+      "description": "Går att tidigarelägga till onsdag 16/12 på engelsklektionen om ni vill",
+      "start": "2026-12-17T13:15:00.000Z",
+      "end": "2026-12-17T14:15:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
     },
