@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05T16:48:58.418Z",
+  "updated": "2026-11-05T16:53:08.156Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13783,6 +13783,17 @@
       "end": "2026-11-11T14:30:00.000Z",
       "allDay": false,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_classroomeae5bc8f@group.calendar.google.com::01qpupidhfefd79siehdacq9vj@google.com",
+      "calendar": "Tyska-Deutsch 9",
+      "calendarId": "c_classroomeae5bc8f@group.calendar.google.com",
+      "title": "tyska glosor 9 ",
+      "description": "",
+      "start": "2026-11-13T10:30:00.000Z",
+      "end": "2026-11-13T11:30:00.000Z",
+      "allDay": false,
+      "calendarColor": "#1967D2"
     },
     {
       "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::2pl001qm7af4rpp0nvhj6m0alv@google.com",
