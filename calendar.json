@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-06T10:23:04.167Z",
+  "updated": "2026-11-06T10:28:17.353Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13917,17 +13917,6 @@
       "calendarColor": "#FF7537"
     },
     {
-      "id": "c_classroomeae5bc8f@group.calendar.google.com::4p9r9pche0uencukqj61igacu5@google.com",
-      "calendar": "Tyska-Deutsch 9",
-      "calendarId": "c_classroomeae5bc8f@group.calendar.google.com",
-      "title": "Prov tyska åk 9",
-      "description": "",
-      "start": "2026-11-30T09:00:00.000Z",
-      "end": "2026-11-30T10:00:00.000Z",
-      "allDay": false,
-      "calendarColor": "#1967D2"
-    },
-    {
       "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::3bie1k37inn4kn7ivl488g66vm@google.com",
       "calendar": "9A Svensgårdsskolan 26/27",
       "calendarId": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com",
@@ -13959,6 +13948,17 @@
       "end": "2026-12-02T10:00:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_classroomeae5bc8f@group.calendar.google.com::6hsg6lrf3qd2fm14m3l49941id@google.com",
+      "calendar": "Tyska-Deutsch 9",
+      "calendarId": "c_classroomeae5bc8f@group.calendar.google.com",
+      "title": "Tyska prov åk 9 ",
+      "description": "",
+      "start": "2026-12-03T10:15:00.000Z",
+      "end": "2026-12-03T11:15:00.000Z",
+      "allDay": false,
+      "calendarColor": "#1967D2"
     },
     {
       "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::2i5psg50ie22h56k1dvc2ur6j7@google.com",
