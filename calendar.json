@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09T16:33:46.148Z",
+  "updated": "2026-11-09T16:38:07.693Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13783,6 +13783,17 @@
       "end": "2026-11-11T14:30:00.000Z",
       "allDay": false,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::03vjq012tb6qb146esum8tdl48@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "tyska glosor 9 ",
+      "description": "",
+      "start": "2026-11-13T10:30:00.000Z",
+      "end": "2026-11-13T11:30:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
     },
     {
       "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::01qpupidhfefd79siehdacq9vj@google.com",
