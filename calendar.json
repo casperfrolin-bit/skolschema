@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-10T10:08:19.982Z",
+  "updated": "2026-11-10T10:13:31.170Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -14003,6 +14003,28 @@
       "end": "2026-12-08T10:00:00.000Z",
       "allDay": false,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::0lo4pi1m77p1j61cjt7e9q471i@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Eng 9b Muntlig presentation ",
+      "description": "Du presenterar delar av din roadtrip.",
+      "start": "2026-12-08T10:30:00.000Z",
+      "end": "2026-12-08T11:30:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::1mbheugriv56m5pu47omu7dgtl@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Eng 9b Muntlig presentation ",
+      "description": "Du presenterar delar av din roadtrip.",
+      "start": "2026-12-09T07:20:00.000Z",
+      "end": "2026-12-09T08:40:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
     },
     {
       "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::5aks9ef43j2lsj9f50m1stnpgn@google.com",
