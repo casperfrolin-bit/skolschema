@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T07:23:03.221Z",
+  "updated": "2026-11-11T07:28:03.223Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -14047,6 +14047,17 @@
       "end": "2026-12-09T08:40:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_classroomffe6207a@group.calendar.google.com::cb6d1547541b3c382dba74201a99438d@google.com",
+      "calendar": "Engelska 9b 26/27",
+      "calendarId": "c_classroomffe6207a@group.calendar.google.com",
+      "title": "Uppgift: Roadtrip",
+      "description": "https://classroom.google.com/c/NzAxMTgwODIyOTEy/a/MjU1MjU3Mjk3Mzla/details",
+      "start": "2026-12-09T13:59:00.000Z",
+      "end": "2026-12-09T14:00:00.000Z",
+      "allDay": false,
+      "calendarColor": "#007B83"
     },
     {
       "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::5aks9ef43j2lsj9f50m1stnpgn@google.com",
