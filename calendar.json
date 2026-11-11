@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T07:43:02.081Z",
+  "updated": "2026-11-11T07:49:11.678Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13935,6 +13935,17 @@
       "description": "Litteraturhistoria - jobba med ditt individuella textutdrag (eller något annat kopplat till uppgiften som du och din grupp eventuellt har kvar) utifrån uppgiften i Classroom.",
       "start": "2026-11-27T07:20:00.000Z",
       "end": "2026-11-27T08:40:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::5eojjj3ln4quq9viotemkc2087@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Eng 9b Deadline Roadtrip",
+      "description": "Idag på lektionen lämnar du in din Roadtrip-text i Classroom. Försäkra dig om att du har skrivit med egna ord!",
+      "start": "2026-12-02T06:30:00.000Z",
+      "end": "2026-12-02T07:30:00.000Z",
       "allDay": false,
       "calendarColor": "#FF7537"
     },
