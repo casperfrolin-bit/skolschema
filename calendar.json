@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19T14:09:18.355Z",
+  "updated": "2026-11-19T14:13:03.884Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13893,6 +13893,17 @@
       "end": "2026-11-27T23:00:00.000Z",
       "allDay": true,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::5nst8j9fqbnbce32ivub3o724i@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "9b mentorstid inställd",
+      "description": "",
+      "start": "2026-11-23T07:20:00.000Z",
+      "end": "2026-11-23T07:40:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
     },
     {
       "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::0u5iikidl9fgh6nk2kpcoork1u@google.com",
