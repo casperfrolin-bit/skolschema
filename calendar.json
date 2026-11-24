@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-24T12:53:04.995Z",
+  "updated": "2026-11-24T12:58:12.734Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13915,6 +13915,17 @@
       "end": "2026-11-24T08:40:00.000Z",
       "allDay": false,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::20d62crsn9h0vtnps3ij9av706@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Religionskunskap",
+      "description": "Läs och repetera s260-265 samt lös uppg 1-5 och aktivitet 1 o 2 s265",
+      "start": "2026-11-25T10:10:00.000Z",
+      "end": "2026-11-25T11:20:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
     },
     {
       "id": "c_643b49f25104dce0847168f2c8e0f601f84d8770dd7970c4cbf238f820e4b7e4@group.calendar.google.com::4eilhs80m64j77llfrjlfeqv4t@google.com",
