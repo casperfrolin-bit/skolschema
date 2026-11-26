@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T09:53:07.042Z",
+  "updated": "2026-11-26T09:58:08.885Z",
   "events": [
     {
       "id": "c_classroom1584f80e@group.calendar.google.com::b09ad738b76439414a56f81668601ac5@google.com",
@@ -13992,6 +13992,17 @@
       "end": "2026-11-27T08:40:00.000Z",
       "allDay": false,
       "calendarColor": "#9A9CFF"
+    },
+    {
+      "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::4259q5fih5bg658e88i6kh3npm@google.com",
+      "calendar": "9B Svensgårdsskolan 26/27",
+      "calendarId": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com",
+      "title": "Religionskunskap",
+      "description": "Läs och repetera s268-271. uppgift 1: Skriv namnet på gudarna, beskriv de olika gudarnas utseende, berätta om de olika gudarnas egenskaper. Uppgift 2: Vilka för- och nackdelar kan det finnas i en religion där människor själv får välja vilka gudar de riktar sig till? Hur påverkar det gemenskap, tradition och personlig tro\"\nUppgift 3: lös frågorna 1-3 s277.",
+      "start": "2026-11-30T10:10:00.000Z",
+      "end": "2026-11-30T11:20:00.000Z",
+      "allDay": false,
+      "calendarColor": "#FF7537"
     },
     {
       "id": "c_a9a27892d52262149c5760e7152606510a94a5528fd8307437cc1a1b3791ab15@group.calendar.google.com::5js5aq9alt7gs6iq9dfg2piti8@google.com",
